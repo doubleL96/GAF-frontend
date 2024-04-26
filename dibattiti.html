@@ -11,7 +11,7 @@
 <body>
     <div class="pulsanti">
         <a class="pulsante_menu" href="index.html" target="_self">Indietro</a>
-        <a class="pulsante_prenota" href="prenotazione.html" target="_self">Prenota Ora</a>
+        <a class="pulsante_prenota" href="prenotazione.html" target="_self" id="pulsantePrenota">Prenota Ora</a>
     </div>
     <div id="logo-container">
         <a id="link_logo" href="index.html" target="_self">
@@ -493,6 +493,17 @@
         image.setAttribute('loading', 'lazy');
       });
     });
+    document.addEventListener('DOMContentLoaded', function() {
+    var email = sessionStorage.getItem('email');
+    var linkPrenota = document.getElementById('pulsantePrenota');
+
+    if (!email) {
+        linkPrenota.href = 'login-signup.html';
+    } else {
+        linkPrenota.href = 'prenotazione.html';
+    }
+});
+
   </script>
   
 </body>
