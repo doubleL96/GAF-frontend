@@ -54,7 +54,7 @@
                 </div>
                 <div class="entryarea">
                     <input type="password" required id="passwordS">
-                    <div class="labelline">PIN <span style="color: rgba(158, 158, 158, 0.715); font-style: italic; font-size: 0.7em;" >(da 4 cifre)</span> </div>
+                    <div class="labelline">PIN <span style="color: rgba(158, 158, 158, 0.715); font-style: italic; font-size: 0.7em;" >(da 4 cifre numeriche)</span> </div>
                 </div>
                 <div class="switch">
                     <span>Possiedi già un account?</span>
@@ -110,7 +110,7 @@
                 pin: pin
             };
 
-            fetch('http://localhost:5000/register', {
+            fetch('https://gaf-backend.onrender.com/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(userData)
@@ -122,6 +122,10 @@
             .then(data => {
                 if (data.message) {
                     window.location.href = "login-signup.html"; 
+                }
+                else
+                {
+                    alert("errore: controlla il formato degli input");
                 }
             })
             .catch(error => {
@@ -150,7 +154,7 @@
         };
   
         // Invia la richiesta al server utilizzando fetch (utilizzate sempre questo format per le richieste)
-        fetch('http://localhost:5000/login', {
+        fetch('https://gaf-backend.onrender.com/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(userData)
