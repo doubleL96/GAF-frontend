@@ -15,25 +15,21 @@
             <div class="heading">Login</div>
             <form action="#">
                 <div class="switch">
-                    <span>Don't have an account?</span>
+                    <span>Non hai un account?</span>
                     <label for="check">Sign up Now</label>
                 </div>
                 <div class="entryarea">
                     <input type="text" required id="emailL">
-                    <div class="labelline">Enter your email</div>
+                    <div class="labelline">Inserisci la tua email</div>
                 </div>
                 <div class="entryarea">
                     <input type="password" required id="passwordL">
-                    <div class="labelline">Enter your PIN (4 digits)</div>
+                    <div class="labelline">inserisci il tuo PIN</div>
                     
                 </div>
-                
-                <a href="#">
-                    Per problemi: rappresentantiliceolevi@gmail.com
-                </a>
+                <a href="#">Per problemi: rappresentantiliceolevi@gmail.com</a>
                 
                 <input type="submit" value="Login" id="btn" onclick="clickLogin()">
-                
                 
             </form>
         </div>
@@ -42,59 +38,37 @@
             <form action="#">
                 <div class="entryarea">
                     <input type="text" required id="nameS">
-                    <div class="labelline">Enter your name</div>
+                    <div class="labelline">Nome</div>
                 </div>
                 <div class="entryarea">
                     <input type="text" required id="surnameS">
-                    <div class="labelline">Enter your surname</div>
+                    <div class="labelline">Cognome</div>
                 </div>
                 <div class="entryarea">
-                        <input type="text" required id="emailS">
-                        <div class="labelline">Enter your email</div>
+                        <input type="email" required id="emailS">
+                        <div class="labelline">Email</div>
                 </div>
-                <div class="class">
-                    <input class="numberlist" list="number" maxlength="1" required id="number1" placeholder="Classe">
-                    <datalist id="number">
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="3"></option>
-                        <option value="4"></option>
-                        <option value="5"></option>
-                    </datalist>
-                    <input class="letterlist" list="letter" maxlength="1" required id="letter1" placeholder="Sezione">
-                    <datalist id="letter">
-                        <option value="A"></option>
-                        <option value="B"></option>
-                        <option value="C"></option>
-                        <option value="D"></option>
-                        <option value="E"></option>
-                    </datalist> 
-                    <input class="sectionlist" list="section" maxlength="2" required id="section1" placeholder="Indirizzo">
-                    <datalist id="section">
-                        <option value="SA"></option>
-                        <option value="SC"></option>
-                        <option value="CL"></option>
-                        <option value="SP"></option>
-                    </datalist>
-                    <div class=""></div>
+                <div class="entryarea">
+                    <input type="class" required id="classeS">
+                    <div class="labelline">Classe <span style="color: rgba(158, 158, 158, 0.715); font-style: italic; font-size: 0.7em;" >(Solo nel formato: 1BCL, 4ESA, 5ASP...)</span></div>
                 </div>
                 <div class="entryarea">
                     <input type="password" required id="passwordS">
-                    <div class="labelline">Enter your PIN(4 digits)</div>
+                    <div class="labelline">PIN <span style="color: rgba(158, 158, 158, 0.715); font-style: italic; font-size: 0.7em;" >(da 4 cifre)</span> </div>
                 </div>
                 <div class="switch">
-                    <span>Already have an account?</span>
+                    <span>Possiedi già un account?</span>
                     <label for="check">Login Now</label>
                 </div>
                 <input type="submit" value="Signup" id="btn" onclick="clickRegistrati()">
                 <div class="switch">
-                    <span>By clicking the “Signup” button or using the social login options, you are creating an account, and agree to our non-existing Terms of Service and Privacy Policy</span>
+                    <span>By clicking the “Signup” button or using the social login options, you are creating an account, and agree to Terms of Service and Privacy Policy</span>
                 </div>
             </form>
         </div>
     </div>
     <div id="logo-container">
-        <a href="index.html" target="_self">
+        <a href="https://www.iisprimolevi.edu.it/" target="_self">
         <div id="Square"></div>
         <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g id="Frame 1">
@@ -108,69 +82,24 @@
         </a>
     </div>
     <script>
-
-
-document.addEventListener('DOMContentLoaded', setupFormValidation);
-
-function setupFormValidation() {
-    const emailInput = document.getElementById('emailS');
-    const pinInput = document.getElementById('passwordS');
-    const numberInput = document.getElementById('number1');
-    const letterInput = document.getElementById('letter1');
-    const sectionInput = document.getElementById('section1');
-
-    emailInput.addEventListener('input', validateEmail);
-    pinInput.addEventListener('input', validatePin);
-    numberInput.addEventListener('input', () => validateDatalist(numberInput, 'number'));
-    letterInput.addEventListener('input', () => validateDatalist(letterInput, 'letter'));
-    sectionInput.addEventListener('input', () => validateDatalist(sectionInput, 'section'));
-
-    function validateEmail() {
-        if (!/\S+@\S+\.\S+/.test(emailInput.value)) {
-            emailInput.style.border = '1px solid red'; // Email is invalid
-        } else {
-            emailInput.style.border = ''; // Email is valid
-        }
-    }
-
-    function validatePin() {
-        if (!/^[0-9]{4}$/.test(pinInput.value)) {
-            pinInput.style.border = '1px solid red'; // PIN is invalid
-        } else {
-            pinInput.style.border = ''; // PIN is valid
-        }
-    }
-
-    function validateDatalist(input, listId) {
-        const list = document.getElementById(listId);
-        const options = Array.from(list.options).map(option => option.value);
-        if (!options.includes(input.value)) {
-            input.style.border = '1px solid red'; // The value is not in the list
-        } else {
-            input.style.border = ''; // The value is valid
-        }
-    }
-}
-
-
-
-     document.addEventListener("DOMContentLoaded", function() {
-        const images = document.querySelectorAll('img');
-        images.forEach(image => {
-            image.setAttribute('loading', 'lazy');
-        });
-        });
-
-        function clickRegistrati() {
-            event.preventDefault();  //prevenire il refresh della pagina
+     
+     function clickRegistrati() {
+            event.preventDefault();  // Previene il refresh della pagina
             var email = document.getElementById("emailS").value;
-            var nomestud = document.getElementById("nameS").value;
-            var cognomestud = document.getElementById("surnameS").value;
-            var classe = document.getElementById("number1").value + document.getElementById("letter1").value + document.getElementById("section1").value;
+            var nomestud = capitalizeWords(document.getElementById("nameS").value);
+            var cognomestud = capitalizeWords(document.getElementById("surnameS").value);
+            var classe = document.getElementById("classeS").value.replace(/\s+/g, '').toUpperCase();
             var pin = document.getElementById("passwordS").value;
 
             register(email, nomestud, cognomestud, classe, pin);
         }
+
+        function capitalizeWords(str) {
+            return str.toLowerCase().split(' ').map(function(word) {
+                return word.charAt(0).toUpperCase() + word.slice(1);
+            }).join(' ');
+        }
+
 
         function register(email, nomestud, cognomestud, classe, pin) {
             const userData = {
@@ -181,7 +110,7 @@ function setupFormValidation() {
                 pin: pin
             };
 
-            fetch('https://gaf-backend.onrender.com/register', {
+            fetch('http://localhost:5000/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(userData)
@@ -221,7 +150,7 @@ function setupFormValidation() {
         };
   
         // Invia la richiesta al server utilizzando fetch (utilizzate sempre questo format per le richieste)
-        fetch('https://gaf-backend.onrender.com/login', {
+        fetch('http://localhost:5000/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(userData)
@@ -231,14 +160,9 @@ function setupFormValidation() {
         {
             if (data.message) {
             console.log("Successo:", data.message);
-            window.location.href="index.html";
+            window.location.href="home.html";
             sessionStorage.email=email;
             // aggiungere qui il codice su cosa fare in caso di successo
-            }
-            else
-            {
-                alert("Email o PIN sbagliati: riprova");
-
             }
         })
         .catch(error => {
