@@ -410,6 +410,10 @@ function fetchLaboratoriDisponibili(turnoId) {
 
 function updateSelectOptions(selectElement, data) {
     selectElement.innerHTML = '';  // Clear existing options first
+
+    // Ordina i laboratori per nome in ordine alfabetico
+    data.sort((a, b) => a.nome.localeCompare(b.nome));
+
     data.forEach(lab => {
         const option = document.createElement('option');
         option.value = lab.nome;  // Use the activity name as the value to be submitted
@@ -418,6 +422,7 @@ function updateSelectOptions(selectElement, data) {
         selectElement.appendChild(option);
     });
 }
+
 
 
 function clickRegistrati(turnoId) {
@@ -452,11 +457,12 @@ function clickRegistrati(turnoId) {
     .then(response => response.json())
     .then(data => {
         if (data.error) {
-            confirmationP.textContent = `Errore: ${data.error}`;
-        } else {
-            confirmationP.textContent = `Prenotazione effettuata con successo per ${activityName} in classe ${activityClass}.
-            \n Fai uno screenshot a questa sezione per memorizzare la prenotazione.`;
-        }
+                confirmationP.textContent = `Errore: ${data.error}`;
+            } else {
+                let trimmedActivityClass = activityClass.slice(0, -3); // Rimuove gli ultimi 3 caratteri
+                confirmationP.textContent = `Prenotazione effettuata con successo per ${activityName} in classe ${trimmedActivityClass}.
+                \n Fai uno screenshot a questa sezione per memorizzare la prenotazione.`;
+            }
     })
     .catch(error => {
         console.error("Errore durante la registrazione:", error);
