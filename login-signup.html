@@ -130,7 +130,7 @@
             })
             .catch(error => {
                 console.error("Registration failed:", error);
-                alert("errore: non siamo stati in grado di registrati, refresha ");
+                alert("errore: non siamo stati in grado di registrarti:", error);
             });
         }
 
@@ -167,6 +167,10 @@
             window.location.href="home.html";
             sessionStorage.email=email;
             // aggiungere qui il codice su cosa fare in caso di successo
+            }
+            else
+            {
+                alert("errore in fase di login", data.message);
             }
         })
         .catch(error => {
