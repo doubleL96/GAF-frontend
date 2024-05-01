@@ -83,16 +83,31 @@
     </div>
     <script>
      
-     function clickRegistrati() {
-            event.preventDefault();  // Previene il refresh della pagina
-            var email = document.getElementById("emailS").value;
-            var nomestud = capitalizeWords(document.getElementById("nameS").value);
-            var cognomestud = capitalizeWords(document.getElementById("surnameS").value);
-            var classe = document.getElementById("classeS").value.replace(/\s+/g, '').toUpperCase();
-            var pin = document.getElementById("passwordS").value;
+     var timerActive = false; // Variabile per tracciare se il timer è attivo
 
-            register(email, nomestud, cognomestud, classe, pin);
+    function clickRegistrati() {
+        event.preventDefault();  // Previene il refresh della pagina
+
+        if (timerActive) {
+            alert("Le persone che premono a ripetizione stanno intasando il server");
+            return;  // Impedisce l'esecuzione ulteriore se il timer è attivo
         }
+
+        var email = document.getElementById("emailS").value;
+        var nomestud = capitalizeWords(document.getElementById("nameS").value);
+        var cognomestud = capitalizeWords(document.getElementById("surnameS").value);
+        var classe = document.getElementById("classeS").value.replace(/\s+/g, '').toUpperCase();
+        var pin = document.getElementById("passwordS").value;
+
+        register(email, nomestud, cognomestud, classe, pin);
+
+        // Imposta il timer
+        timerActive = true;
+        setTimeout(function() {
+            timerActive = false; // Resetta il timer dopo 20 secondi
+        }, 20000); // 20000 millisecondi equivalgono a 20 secondi
+    }
+
 
         function capitalizeWords(str) {
             return str.toLowerCase().split(' ').map(function(word) {
