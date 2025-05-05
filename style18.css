@@ -1,0 +1,530 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    color: #000000ab;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+    
+}
+
+.container {
+    position: relative;
+    display: flex;
+    max-width: 480px;
+    width: 100%;
+    height: 1060px; 
+    transform-style: preserve-3d;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7);
+    border-radius: 25px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    
+}
+
+
+input[type="checkbox"] {
+    display: none;
+}
+
+#check:checked ~ .container {
+    transform: rotateY(-180deg);
+    height: 650px; 
+}
+
+
+
+.container .page {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding: 40px; 
+    background-color: #fff;
+    border-radius: 25px;
+}
+
+
+.container .signup {
+    backface-visibility: hidden; 
+}
+
+.signup{
+    height:1000px;
+}
+
+.container .heading {
+    font-size: 3.5em;
+    font-weight: 600;
+    text-align: center;
+    margin: 20px 0;
+    color: rgba(0, 0, 0, 0.808);
+}
+
+.container .page form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px; 
+}
+
+.container .page form .entryarea {
+    margin: 20px 0; 
+    position: relative;
+}
+
+.scrollableSelect {
+    width: 100%;
+    max-height: 32px; /* Initial max-height for 1 option */
+    border: 1.5px solid #000000ab;
+    border-radius: 7px;
+    font-size: 1.2em;
+    padding: 5px 8px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.12), inset 0 1px 2px rgba(0,0,0,0.24);
+    overflow-y: hidden; /* Important for initial state */
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    transition: max-height 0.2s ease-in-out;
+}
+
+
+.scrollableSelect.expanded {
+    max-height: 192px; /* Adjust this value based on the number of items you want to show */
+    overflow-y: auto;
+}
+
+
+.container .page form .entryarea select {
+    width: 100%;
+    height: auto; /* Let CSS calculate the height based on number of options visible */
+    max-height: 192px; /* Max height to show before scrolling */
+    border: 1.5px solid #000000ab;
+    border-radius: 7px;
+    font-size: 1.2em;
+    -webkit-appearance: none; /* Disables default styling by the browser */
+    -moz-appearance: none;   /* Specifically for Mozilla Firefox */
+    appearance: none;        /* Standard CSS3 pseudo-element */
+    padding: 5px 8px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.12), inset 0 1px 2px rgba(0,0,0,0.24);
+}
+
+
+.container .page form .entryarea .labelline {
+    position: absolute;
+    top: -14px; 
+    left: 12px; 
+    background-color: white;
+    padding: 0 5px;
+}
+
+
+.container .page form #btn {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 1.6em;
+    background: linear-gradient(111.4deg, rgb(55, 168, 192) -0.2%, rgb(103, 187, 125) 100.2%);
+    
+    /*
+        linear-gradient(to right, rgb(52, 232, 158), rgb(15, 52, 67));
+    
+        linear-gradient(89.8deg, rgb(5, 81, 180) 4.3%, rgb(22, 142, 241) 101.4%); */
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    border: none;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+}
+
+.container .page form #btn2 {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 1.6em;
+    background: linear-gradient(111.4deg, rgb(55, 168, 192) -0.2%, rgb(103, 187, 125) 100.2%);
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    border: none;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+}
+.container .page form #btn3 {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 1.6em;
+    background: linear-gradient(111.4deg, rgb(55, 168, 192) -0.2%, rgb(103, 187, 125) 100.2%);
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    border: none;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+}
+.container .page form #btn4 {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 1.6em;
+    background: linear-gradient(111.4deg, rgb(55, 168, 192) -0.2%, rgb(103, 187, 125) 100.2%);
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    border: none;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+}
+
+.container .page form #btn:hover {
+    transform: scale(0.9);
+}
+.container .page form #btn2:hover {
+    transform: scale(0.9);
+}
+.container .page form #btn3:hover {
+    transform: scale(0.9);
+}
+.container .page form #btn4:hover {
+    transform: scale(0.9);
+}
+
+.container .page form #mostraEntryAreaButton1  {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-size: 1.6em;
+    background: linear-gradient(to right, #434343 0%, black 100%);
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    border: none;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.container .page form #mostraEntryAreaButton2 {
+    margin-top: 50px;
+    margin-bottom: 120px;
+    font-size: 1.6em;
+    background: linear-gradient(to right, #434343 0%, black 100%);
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    border: none;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.container .page form #mostraEntryAreaButton3 {
+    margin-top: 20px;
+    margin-bottom: 30px;
+    font-size: 1.6em;
+    background: linear-gradient(to right, #434343 0%, black 100%);
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    border: none;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.container .page form #mostraEntryAreaButton4 {
+    margin-top: 50px;
+    margin-bottom: 70px;
+    font-size: 1.6em;
+    background: linear-gradient(to right, #434343 0%, black 100%);
+    color: white;
+    cursor: pointer;
+    border-radius: 7px;
+    border: none;
+    padding: 8px 0;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.container .page form #mostraEntryAreaButton1:hover {
+    transform: scale(0.9);
+}
+.container .page form #mostraEntryAreaButton2:hover {
+    transform: scale(0.9);
+}
+.container .page form #mostraEntryAreaButton3:hover {
+    transform: scale(0.9);
+}
+.container .page form #mostraEntryAreaButton4:hover {
+    transform: scale(0.9);
+}
+
+
+
+.disclaimer {
+    font-size: 1em;
+    font-weight: 500;
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    text-align: center;
+}
+
+
+
+
+
+
+#logo-container{
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 0;
+    left: 0;
+}
+#Square{
+    width:35px;
+    height:35px;
+    padding: 0;
+    background-color: white;
+    opacity: 0.7;
+    top: 108px;
+    left: 36%;
+}
+#L-left,
+#L-right,
+#Square{
+    position:relative;
+}
+#L-left{
+   animation: down-left 10s ease-in-out;
+   animation-delay: 2s;
+   animation-iteration-count: initial;
+}
+#L-right{
+    animation: up-right 10s ease-in-out;
+    animation-delay: 2s;
+    animation-iteration-count: initial;
+}
+#Square{
+    animation: rotate-right 10s ease-in-out;
+    animation-delay: 2s;
+    animation-iteration-count: initial;
+}
+.h1{
+    position: absolute;
+    width: 300px;
+    height: 130px;
+    top: 40px;
+    left: 160px;
+    overflow: hidden;
+    cursor: pointer;
+}
+h1{
+    position: absolute;
+    color: #fff;
+    opacity: 0.7;
+    left: -200px;
+    top: 47px;
+    animation: swap 1.5s ease-out;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
+    font-size: 40px;
+}
+h4{
+    position: absolute;
+    color: #fff;
+    opacity: 0.7;
+    left: -200px;
+    top: 90px;
+    animation: swap 1.5s ease-out;
+    animation-delay: 3s;
+    animation-fill-mode: forwards;
+    font-size: 22px;
+}
+
+
+@keyframes down-left{
+    0%   {transform: translate(0);}
+    10%  {transform: translate(-5px, 5px);}
+    25%  {transform: translate(0);}
+    100% {transform: translate(0);}
+}
+@keyframes up-right{
+    0%   {transform: translate(0);}
+    10%  {transform: translate(5px, -5px);}
+    25%  {transform: translate(0);}
+    100% {transform: translate(0);}
+}
+@keyframes rotate-right{
+    0%   {transform: rotateZ(0);}
+    20%  {transform: rotateZ(450deg);}
+    100% {transform: rotateZ(450deg);}
+}
+@keyframes swap{
+    from{
+        transform: translateX(0);
+    }
+    to{
+        transform: translateX(200px);
+    }
+}
+@keyframes move{
+    from{
+        transform: translateX(-50%);
+    }
+    to{
+        transform: translateX(-140px);
+    }
+}
+
+
+@media (max-width: 700px) {
+    
+    .container {
+        height: auto;
+        margin-top: 20px;
+        padding-bottom: 20px;
+        
+    }
+
+    .container .page {
+        padding: 20px;
+    }
+
+    .container .page form .entryarea .labelline {
+        font-size: 1em;
+    }
+
+    .container .page form #btn {
+        font-size: 1.4em; 
+    }
+
+    
+    body {
+        align-items: normal;
+        justify-content: center;
+        background: linear-gradient(15deg, #13547a 0%, #80d0c7 100%);
+    }
+    .container{
+        max-width: none;
+        width: 93%;
+        /*box-shadow: none;*/
+        margin-top: 190px;
+        margin-bottom:40px;
+        height: 1040px;
+
+    }
+    .container .page form .entryarea .labelline {
+        font-size: 0.8em;
+        
+    }
+    .container .disclaimer {
+        font-size: 0.8em;
+
+    }
+    
+
+    .container .page form .entryarea input:focus+.labelline,
+    .container .page form .entryarea input:valid+.labelline {
+     color: #0fc9e7;
+     display: none;
+     height: 30px;
+     line-height: 30px;
+     transform: translate(-15px, -15px) scale(0.88);
+     z-index: 1111;
+    }
+    .container .page form .entryarea input:valid{
+        background-color: #0fcae739;
+        border:none;
+    }
+    .container .page form .class input:valid{
+        background-color: #0fcae739;
+        border:none;
+    }
+    .container .page form .switch {
+        font-size: 0.7em;
+        font-weight: 400;
+        text-align: right;
+    }
+    #L-left,
+    #L-right,
+    #Square{
+        fill: white;
+        background-color: white;
+    }
+
+
+    #logo-container{
+        top: 10px;
+        left: 49.8%;
+        transform: translateX(-50%);
+        animation: move 1.5s ease-out;
+        animation-delay: 3s;
+        animation-fill-mode: forwards;
+    }
+    h1{
+        color: white;
+    }
+    h4{
+        color: white;
+    }
+
+    svg{
+        height: 120px;
+        width: 120px;
+        
+    }
+    #logo-container{
+        top: 20px;
+        left: 49.8%;
+        transform: translateX(-50%);
+        animation: move 1.5s ease-out;
+        animation-delay: 3s;
+        animation-fill-mode: forwards;
+        width: 120px;
+        height: 120px;
+        
+    
+    
+    }
+
+    #Square{
+        width:26px;
+        height:26px;
+        padding: 0;
+        background-color: white;
+        opacity: 0.7;
+        top: 73.3px;
+        left: 39%;
+    }
+
+    .h1{
+        position: absolute;
+        width: 200px;
+        height: 130px;
+        top: 17px;
+        left: 105px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    h1{
+        color: white;
+        font-size: 30px;
+        margin-top: -8px;
+    }
+    h4{
+        color: white;
+        font-size:20px;
+        margin-top: -20px;
+    }
+
+}
+
+

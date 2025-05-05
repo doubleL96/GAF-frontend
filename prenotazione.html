@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="prenotazione.css">
+    <link rel="icon" href="immagini/logo_real.ico" type="image/x-icon">
+    <title>Prenotazione Laboratori - GAF 2024</title>
+    <style>
+        /* Stili per i messaggi e le animazioni */
+        .error-message {
+            color: #c62828;
+            font-weight: bold;
+        }
+
+        .success-message {
+            color: #2e7d32;
+            font-weight: bold;
+        }
+
+        .save-note {
+            font-style: italic;
+            font-size: 0.9em;
+            color: #555;
+            display: block;
+            margin-top: 8px;
+        }
+
+        .home-button {
+            margin-top: 15px;
+            padding: 8px 16px;
+            background: linear-gradient(111.4deg, rgb(55, 168, 192) -0.2%, rgb(103, 187, 125) 100.2%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            display: block;
+        }
+
+        .home-button:hover {
+            transform: scale(0.95);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn-disabled {
+            opacity: 0.6;
+            cursor: not-allowed !important;
+            transform: none !important;
+        }
+
+        /* Animazione di pulsazione per i messaggi */
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Spinner di caricamento */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-left: 10px;
+            border: 3px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top-color: #3498db;
+            animation: spin 1s ease-in-out infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Stili per la barra di stato del server */
+        .server-status-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            z-index: 1000;
+            text-align: center;
+            transition: all 0.3s ease;
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .server-status-bar.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .status-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 10px;
+            background-color: #4CAF50;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0.7; }
+        }
+
+        .status-low {
+            background-color: #4CAF50; /* Verde per carico basso */
+        }
+
+        .status-medium {
+            background-color: #FFC107; /* Giallo per carico medio */
+        }
+
+        .status-high {
+            background-color: #F44336; /* Rosso per carico alto */
+        }
+
+        /* Stili per il riepilogo delle prenotazioni */
+        .booking-summary {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .booking-summary h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.2em;
+            text-align: center;
+        }
+
+        .booking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .booking-table th, .booking-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .booking-table th {
+            background-color: #f0f0f0;
+            font-weight: 600;
+        }
+
+        .booking-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .no-bookings {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 10px;
+        }
+
+        .turno-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 600;
+            color: white;
+        }
+
+        .turno-1, .turno-3 {
+            background-color: #3498db;
+        }
+
+        .turno-2, .turno-4 {
+            background-color: #9b59b6;
+        }
+
+        .booked-badge {
+            display: inline-block;
+            margin-left: 8px;
+            padding: 2px 6px;
+            background-color: #27ae60;
+            color: white;
+            border-radius: 10px;
+            font-size: 0.7em;
+            font-weight: bold;
+        }
+
+        /* Stile per i pulsanti di turno già prenotati */
+        .mostraEntryAreaButton.btn-disabled {
+            background: linear-gradient(to right, #7f8c8d 0%, #95a5a6 100%) !important;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <input type="checkbox" id="check">
+    <div id="serverStatusBar" class="server-status-bar">
+        <div class="status-content">
+            <span id="requestCount">0</span> richieste in elaborazione
+            <div class="status-indicator"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="signup page">
+            <div id="bookingSummary" class="booking-summary">
+                <h3>Le tue prenotazioni</h3>
+                <div id="loadingBookings">Caricamento prenotazioni... <div class="loading-spinner"></div></div>
+                <div id="bookingTable" style="display: none;"></div>
+            </div>
+            <div class="heading">Venerdì</div>
+            <form action="#">
+
+                <!--show1-->
+
+                <div class="pulsante1">
+                    <button class="mostraEntryAreaButton" data-turno-id="1" id="mostraEntryAreaButton1">TURNO 1</button>
+                    <div class="entryarea" style="display: none;">
+                        <div class="labelline">08.00-10.00</div>
+                        <select required id="activitySelect1" size="1" class="scrollableSelect">
+                            <option value="">Seleziona un'opzione</option>
+                            <option value="opzione1">Opzione 1</option>
+                            <option value="opzione2">Opzione 2</option>
+                            <option value="opzione3">Opzione 3</option>
+                            <option value="opzione4">Opzione 4</option>
+                            <option value="opzione5">Opzione 5</option>
+                            <option value="opzione6">Opzione 6</option>
+                            <option value="opzione7">Opzione 7</option>
+                            <option value="opzione8">Opzione 8</option>
+                            <option value="opzione9">Opzione 9</option>
+                            <option value="opzione10">Opzione 10</option>
+                        </select>
+                        <p id="conferma1"> Scegli un opzione e prenota </p>
+
+                    </div>
+
+                </div>
+                <input type="submit" value="Prenota" id="btn" onclick="clickRegistrati(1)" style="display: none;">
+
+            <!--show2-->
+
+            <div class="pulsante2">
+                <button class="mostraEntryAreaButton" data-turno-id="2" id="mostraEntryAreaButton2">TURNO 2</button>
+                <div class="entryarea" style="display: none;">
+                    <div class="labelline">11.00-13.00</div>
+                    <select required id="activitySelect2">
+                        <option value="">Seleziona un'opzione</option>
+                            <option value="opzione2">Opzione A</option>
+                            <option value="opzione3">Opzione B</option>
+                            <option value="opzione4">Opzione C</option>
+                            <option value="opzione5">Opzione 5</option>
+                            <option value="opzione6">Opzione 6</option>
+                            <option value="opzione7">Opzione 7</option>
+                            <option value="opzione8">Opzione 8</option>
+                            <option value="opzione9">Opzione 9</option>
+                            <option value="opzione10">Opzione 10</option>
+                    </select>
+                    <p id="conferma2"> Scegli un opzione e prenota </p>
+
+                </div>
+            </div>
+
+                <input type="submit" value="Prenota" id="btn2" onclick="clickRegistrati(2)" style="display: none;">
+
+        <!--show3-->
+
+        <div class="heading">Sabato</div>
+            <div class="pulsante3">
+                <button class="mostraEntryAreaButton" data-turno-id="3" id="mostraEntryAreaButton3">TURNO 3</button>
+                <div class="entryarea"style="display: none;">
+                    <div class="labelline">08.00-10.00</div>
+                    <select required id="activitySelect3">
+                        <option value="">Seleziona un'opzione</option>
+                        <option value="opzione2">Opzione 2</option>
+                            <option value="opzione3">Opzione 3</option>
+                            <option value="opzione4">Opzione 4</option>
+                            <option value="opzione5">Opzione 5</option>
+                            <option value="opzione6">Opzione 6</option>
+                            <option value="opzione7">Opzione 7</option>
+                            <option value="opzione8">Opzione 8</option>
+                            <option value="opzione9">Opzione 9</option>
+                            <option value="opzione10">Opzione 10</option>
+                    </select>
+                    <p id="conferma3"> Scegli un opzione e prenota </p>
+
+                </div>
+            </div>
+                <input type="submit" value="Prenota" id="btn3" onclick="clickRegistrati(3)" style="display: none;">
+
+            <!--show4-->
+
+            <div class="pulsante4">
+                <button class="mostraEntryAreaButton" data-turno-id="4" id="mostraEntryAreaButton4">TURNO 4</button>
+                <div class="entryarea"style="display: none;">
+                    <div class="labelline">11.00-13.00</div>
+                    <select required id="activitySelect4">
+                        <option value="opzione2">Opzione 2</option>
+                            <option value="opzione3">Opzione 3</option>
+                            <option value="opzione4">Opzione 4</option>
+                            <option value="opzione5">Opzione 5</option>
+                            <option value="opzione6">Opzione 6</option>
+                            <option value="opzione7">Opzione 7</option>
+                            <option value="opzione8">Opzione 8</option>
+                            <option value="opzione9">Opzione 9</option>
+                            <option value="opzione10">Opzione 10</option>
+                    </select>
+                    <p id="conferma4"> Scegli un opzione e prenota </p>
+                </div>
+            </div>
+                <input type="submit" value="Prenota" id="btn4" onclick="clickRegistrati(4)" style="display: none;">
+
+            <div class="disclaimer">
+                In caso di problematiche legate alla prenotazione contattare il centro assistenza all'indirizzo email: helpuser@gmai.com
+            </div>
+        </div>
+
+            </form>
+
+    </div>
+
+    <div id="logo-container">
+        <a href="home.html" target="_self">
+        <div id="Square"></div>
+        <svg width="180" height="180" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="Frame 1">
+            <g id="Ls-group">
+            <path id="L-left" opacity="0.7" fill-rule="evenodd" clip-rule="evenodd" d="M44.3334 12.6667H26.6667V93.6667H44.3334H72.6667V77H44.3334L44.3334 12.6667Z" fill="white"/>
+            <path id="L-right" opacity="0.7" fill-rule="evenodd" clip-rule="evenodd" d="M75.6666 108H93.3333L93.3333 27H75.6666H47.3333V43.6667H75.6666L75.6666 108Z" fill="white"/>
+            </g>
+            </g>
+        </svg>
+        <div class="h1"><h1>Liceo Levi</h1><h4>montebelluna</h4></div>
+        </a>
+    </div>
+    <script>
+
+//1
+
+document.addEventListener('DOMContentLoaded', function () {
+    const selectElement = document.getElementById('activitySelect1');
+
+
+
+    selectElement.addEventListener('click', function (e) {
+        // Toggle the size attribute based on its current state
+        if (selectElement.size > 1) {
+            selectElement.size = 1;
+            selectElement.style.overflowY = 'hidden';
+        } else {
+            selectElement.size = 6;  // Or whatever number of items you want to show
+            selectElement.style.overflowY = 'auto';
+        }
+    });
+
+    selectElement.addEventListener('blur', function () {
+        // Ensure to collapse the dropdown when the select loses focus
+        selectElement.size = 1;
+        selectElement.style.overflowY = 'hidden';
+    });
+
+    selectElement.addEventListener('change', function () {
+        // Collapse the dropdown also when a selection has been made
+        window.setTimeout(function() {
+            selectElement.size = 1;
+            selectElement.style.overflowY = 'hidden';
+        }, 100); // Add slight delay to allow for selection
+    });
+});
+
+//2
+
+document.addEventListener('DOMContentLoaded', function () {
+    const selectElement = document.getElementById('activitySelect2');
+
+
+
+    selectElement.addEventListener('click', function (e) {
+        // Toggle the size attribute based on its current state
+        if (selectElement.size > 1) {
+            selectElement.size = 1;
+            selectElement.style.overflowY = 'hidden';
+        } else {
+            selectElement.size = 6;  // Or whatever number of items you want to show
+            selectElement.style.overflowY = 'auto';
+        }
+    });
+
+    selectElement.addEventListener('blur', function () {
+        // Ensure to collapse the dropdown when the select loses focus
+        selectElement.size = 1;
+        selectElement.style.overflowY = 'hidden';
+    });
+
+    selectElement.addEventListener('change', function () {
+        // Collapse the dropdown also when a selection has been made
+        window.setTimeout(function() {
+            selectElement.size = 1;
+            selectElement.style.overflowY = 'hidden';
+        }, 100); // Add slight delay to allow for selection
+    });
+});
+
+//3
+
+document.addEventListener('DOMContentLoaded', function () {
+    const selectElement = document.getElementById('activitySelect3');
+
+
+
+    selectElement.addEventListener('click', function (e) {
+        // Toggle the size attribute based on its current state
+        if (selectElement.size > 1) {
+            selectElement.size = 1;
+            selectElement.style.overflowY = 'hidden';
+        } else {
+            selectElement.size = 6;  // Or whatever number of items you want to show
+            selectElement.style.overflowY = 'auto';
+        }
+    });
+
+    selectElement.addEventListener('blur', function () {
+        // Ensure to collapse the dropdown when the select loses focus
+        selectElement.size = 1;
+        selectElement.style.overflowY = 'hidden';
+    });
+
+    selectElement.addEventListener('change', function () {
+        // Collapse the dropdown also when a selection has been made
+        window.setTimeout(function() {
+            selectElement.size = 1;
+            selectElement.style.overflowY = 'hidden';
+        }, 100); // Add slight delay to allow for selection
+    });
+});
+
+//4
+
+document.addEventListener('DOMContentLoaded', function () {
+    const selectElement = document.getElementById('activitySelect4');
+
+
+
+    selectElement.addEventListener('click', function (e) {
+        // Toggle the size attribute based on its current state
+        if (selectElement.size > 1) {
+            selectElement.size = 1;
+            selectElement.style.overflowY = 'hidden';
+        } else {
+            selectElement.size = 6;  // Or whatever number of items you want to show
+            selectElement.style.overflowY = 'auto';
+        }
+    });
+
+    selectElement.addEventListener('blur', function () {
+        // Ensure to collapse the dropdown when the select loses focus
+        selectElement.size = 1;
+        selectElement.style.overflowY = 'hidden';
+    });
+
+    selectElement.addEventListener('change', function () {
+        // Collapse the dropdown also when a selection has been made
+        window.setTimeout(function() {
+            selectElement.size = 1;
+            selectElement.style.overflowY = 'hidden';
+        }, 100); // Add slight delay to allow for selection
+    });
+});
+
+
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    var mostraEntryAreaButton1 = document.getElementById('mostraEntryAreaButton1');
+    var entryAreaDiv1 = document.querySelector('.pulsante1 .entryarea');
+    var prenotaButton1 = document.getElementById('btn');
+    var disclaimer = document.querySelector('.disclaimer');
+    var mostraEntryAreaButton2 = document.getElementById('mostraEntryAreaButton2');
+    var entryAreaDiv2 = document.querySelector('.pulsante2 .entryarea');
+    var prenotaButton2 = document.getElementById('btn2');
+    var mostraEntryAreaButton4 = document.getElementById('mostraEntryAreaButton4');
+    var entryAreaDiv4 = document.querySelector('.pulsante4 .entryarea');
+    var prenotaButton4 = document.getElementById('btn4');
+    var mostraEntryAreaButton3 = document.getElementById('mostraEntryAreaButton3');
+    var entryAreaDiv3 = document.querySelector('.pulsante3 .entryarea');
+    var prenotaButton3 = document.getElementById('btn3');
+
+    mostraEntryAreaButton1.addEventListener('click', function() {
+        // Mostra l'entry area e il pulsante prenota, nasconde il disclaimer
+        entryAreaDiv1.style.display = "block";
+        mostraEntryAreaButton1.style.display = "none";
+        prenotaButton1.style.display = "block";
+        entryAreaDiv2.style.display = "none";
+        mostraEntryAreaButton2.style.display = "block";
+        prenotaButton2.style.display = "none";
+        entryAreaDiv3.style.display = "none";
+        mostraEntryAreaButton3.style.display = "block";
+        prenotaButton3.style.display = "none";
+        entryAreaDiv4.style.display = "none";
+        mostraEntryAreaButton4.style.display = "block";
+        prenotaButton4.style.display = "none";
+    });
+    mostraEntryAreaButton2.addEventListener('click', function() {
+        // Mostra l'entry area e il pulsante prenota, nasconde il disclaimer
+        entryAreaDiv2.style.display = "block";
+        mostraEntryAreaButton2.style.display = "none";
+        prenotaButton2.style.display = "block";
+        entryAreaDiv1.style.display = "none";
+        mostraEntryAreaButton1.style.display = "block";
+        prenotaButton1.style.display = "none";
+        entryAreaDiv3.style.display = "none";
+        mostraEntryAreaButton3.style.display = "block";
+        prenotaButton3.style.display = "none";
+        entryAreaDiv4.style.display = "none";
+        mostraEntryAreaButton4.style.display = "block";
+        prenotaButton4.style.display = "none";
+    });
+    mostraEntryAreaButton3.addEventListener('click', function() {
+        // Mostra l'entry area e il pulsante prenota, nasconde il disclaimer
+        entryAreaDiv3.style.display = "block";
+        mostraEntryAreaButton3.style.display = "none";
+        prenotaButton3.style.display = "block";
+        entryAreaDiv2.style.display = "none";
+        mostraEntryAreaButton2.style.display = "block";
+        prenotaButton2.style.display = "none";
+        entryAreaDiv1.style.display = "none";
+        mostraEntryAreaButton1.style.display = "block";
+        prenotaButton1.style.display = "none";
+        entryAreaDiv4.style.display = "none";
+        mostraEntryAreaButton4.style.display = "block";
+        prenotaButton4.style.display = "none";
+    });
+    mostraEntryAreaButton4.addEventListener('click', function() {
+        // Mostra l'entry area e il pulsante prenota, nasconde il disclaimer
+        entryAreaDiv4.style.display = "block";
+        mostraEntryAreaButton4.style.display = "none";
+        prenotaButton4.style.display = "block";
+        entryAreaDiv1.style.display = "none";
+        mostraEntryAreaButton1.style.display = "block";
+        prenotaButton1.style.display = "none";
+        entryAreaDiv3.style.display = "none";
+        mostraEntryAreaButton3.style.display = "block";
+        prenotaButton3.style.display = "none";
+        entryAreaDiv2.style.display = "none";
+        mostraEntryAreaButton2.style.display = "block";
+        prenotaButton2.style.display = "none";
+    });
+});
+
+// Variabili globali per il monitoraggio delle richieste
+let lastKnownRequestCount = 0;
+let statusUpdateInterval = null;
+
+// Funzione per aggiornare la barra di stato
+function updateStatusBar(requestCount) {
+    const statusBar = document.getElementById('serverStatusBar');
+    const requestCountElement = document.getElementById('requestCount');
+    const statusIndicator = document.querySelector('.status-indicator');
+
+    // Aggiorna il contatore
+    requestCountElement.textContent = requestCount;
+
+    // Determina lo stato del server in base al numero di richieste
+    statusIndicator.classList.remove('status-low', 'status-medium', 'status-high');
+
+    if (requestCount <= 10) {
+        statusIndicator.classList.add('status-low');
+    } else if (requestCount <= 50) {
+        statusIndicator.classList.add('status-medium');
+    } else {
+        statusIndicator.classList.add('status-high');
+    }
+
+    // Mostra o nascondi la barra di stato
+    if (requestCount > 0) {
+        statusBar.classList.add('active');
+    } else {
+        statusBar.classList.remove('active');
+    }
+
+    // Aggiorna la variabile globale
+    lastKnownRequestCount = requestCount;
+}
+
+// Funzione per ottenere il conteggio delle richieste attive dal server
+function fetchActiveRequestCount() {
+    fetch('https://gaf-backend.onrender.com/active_requests')
+        .then(response => response.json())
+        .then(data => {
+            updateStatusBar(data.total);
+        })
+        .catch(error => {
+            console.error('Errore nel recupero del conteggio delle richieste:', error);
+        });
+}
+
+// Funzione per avviare il monitoraggio delle richieste
+function startRequestMonitoring() {
+    // Ferma eventuali monitoraggi precedenti
+    if (statusUpdateInterval) {
+        clearInterval(statusUpdateInterval);
+    }
+
+    // Avvia un nuovo monitoraggio
+    fetchActiveRequestCount(); // Prima chiamata immediata
+    statusUpdateInterval = setInterval(fetchActiveRequestCount, 5000); // Poi ogni 5 secondi
+}
+
+// Funzione per aggiornare la barra di stato con i dati di una risposta
+function updateStatusFromResponse(data) {
+    if (data && data.active_requests !== undefined) {
+        updateStatusBar(data.active_requests);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Carica le prenotazioni dell'utente all'avvio
+    fetchUserBookings();
+
+    // Avvia il monitoraggio delle richieste
+    startRequestMonitoring();
+
+    const buttons = document.querySelectorAll('.mostraEntryAreaButton');
+    buttons.forEach(button => {
+        button.addEventListener('click', function () {
+            const turnoId = this.getAttribute('data-turno-id');
+            fetchLaboratoriDisponibili(turnoId);
+        });
+    });
+});
+
+// Funzione per recuperare e mostrare le prenotazioni dell'utente
+function fetchUserBookings() {
+    const email = sessionStorage.getItem('email');
+    const loadingElement = document.getElementById('loadingBookings');
+    const tableContainer = document.getElementById('bookingTable');
+
+    // Se l'utente non è loggato, mostra un messaggio appropriato
+    if (!email) {
+        loadingElement.style.display = 'none';
+        tableContainer.style.display = 'block';
+        tableContainer.innerHTML = '<div class="no-bookings">Effettua il login per vedere le tue prenotazioni</div>';
+        return;
+    }
+
+    // Timeout per evitare richieste bloccate
+    const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 8000)
+    );
+
+    // Esegui la richiesta con timeout
+    Promise.race([
+        fetch(`https://gaf-backend.onrender.com/user_bookings?email=${encodeURIComponent(email)}`),
+        timeoutPromise
+    ])
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        loadingElement.style.display = 'none';
+        tableContainer.style.display = 'block';
+
+        // Aggiorna la barra di stato con il conteggio delle richieste attive
+        if (data && data.length > 0 && data[0].active_requests !== undefined) {
+            updateStatusBar(data[0].active_requests);
+        }
+
+        if (!data || data.length === 0) {
+            tableContainer.innerHTML = '<div class="no-bookings">Non hai ancora effettuato prenotazioni</div>';
+            return;
+        }
+
+        // Crea la tabella delle prenotazioni
+        let tableHTML = `
+            <table class="booking-table">
+                <thead>
+                    <tr>
+                        <th>Turno</th>
+                        <th>Giorno</th>
+                        <th>Orario</th>
+                        <th>Laboratorio</th>
+                        <th>Aula</th>
+                    </tr>
+                </thead>
+                <tbody>
+        `;
+
+        // Mappa dei turni
+        const turnoMap = {
+            1: { day: 'Venerdì', time: '08:00-10:00' },
+            2: { day: 'Venerdì', time: '11:00-13:00' },
+            3: { day: 'Sabato', time: '08:00-10:00' },
+            4: { day: 'Sabato', time: '11:00-13:00' }
+        };
+
+        // Ordina le prenotazioni per turno
+        data.sort((a, b) => a.idturno - b.idturno);
+
+        // Aggiungi ogni prenotazione alla tabella
+        data.forEach(booking => {
+            const turnoInfo = turnoMap[booking.idturno] || { day: 'N/A', time: 'N/A' };
+            tableHTML += `
+                <tr>
+                    <td><span class="turno-badge turno-${booking.idturno}">Turno ${booking.idturno}</span></td>
+                    <td>${turnoInfo.day}</td>
+                    <td>${turnoInfo.time}</td>
+                    <td>${booking.nome}</td>
+                    <td>${booking.classe || 'N/A'}</td>
+                </tr>
+            `;
+        });
+
+        tableHTML += `
+                </tbody>
+            </table>
+        `;
+
+        tableContainer.innerHTML = tableHTML;
+
+        // Disabilita i pulsanti per i turni già prenotati
+        data.forEach(booking => {
+            const turnoId = booking.idturno;
+            const button = document.querySelector(`.mostraEntryAreaButton[data-turno-id="${turnoId}"]`);
+            if (button) {
+                button.disabled = true;
+                button.classList.add('btn-disabled');
+                button.innerHTML = `TURNO ${turnoId} <span class="booked-badge">Prenotato</span>`;
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Errore nel recupero delle prenotazioni:', error);
+        loadingElement.style.display = 'none';
+        tableContainer.style.display = 'block';
+
+        if (error.message.includes('Timeout')) {
+            tableContainer.innerHTML = '<div class="no-bookings">Errore di timeout nel caricamento delle prenotazioni. Ricarica la pagina per riprovare.</div>';
+        } else {
+            tableContainer.innerHTML = '<div class="no-bookings">Errore nel caricamento delle prenotazioni. Ricarica la pagina per riprovare.</div>';
+        }
+    });
+}
+
+// Variabile per tenere traccia dei caricamenti in corso
+let isLoadingLabs = {};
+
+function fetchLaboratoriDisponibili(turnoId, retryCount = 0) {
+    const maxRetries = 3;
+    const selectElement = document.querySelector(`#activitySelect${turnoId}`);
+    const confirmationP = document.getElementById(`conferma${turnoId}`);
+    const prenotaButton = document.getElementById(`btn${turnoId === 1 ? '' : turnoId}`);
+
+    // Previeni caricamenti multipli simultanei per lo stesso turno
+    if (isLoadingLabs[turnoId]) {
+        return;
+    }
+
+    isLoadingLabs[turnoId] = true;
+
+    // Mostra messaggio di caricamento con spinner
+    confirmationP.innerHTML = "Caricamento laboratori disponibili... <div class='loading-spinner'></div>";
+
+    // Disabilita temporaneamente il pulsante di prenotazione
+    if (prenotaButton) {
+        prenotaButton.disabled = true;
+        prenotaButton.classList.add('btn-disabled');
+    }
+
+    // Timeout per evitare richieste bloccate
+    const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 8000)
+    );
+
+    // Esegui la richiesta con timeout
+    Promise.race([
+        fetch(`https://gaf-backend.onrender.com/laboratori_disponibili?turno=${turnoId}`),
+        timeoutPromise
+    ])
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Aggiorna la barra di stato con il conteggio delle richieste attive
+        if (data && data.length > 0 && data[0].active_requests !== undefined) {
+            updateStatusBar(data[0].active_requests);
+        }
+
+        if (data.length === 0) {
+            // Nessun laboratorio disponibile
+            confirmationP.innerHTML = "<span class='error-message'>Non ci sono laboratori disponibili per questo turno.</span>";
+            selectElement.innerHTML = '<option value="">Nessun laboratorio disponibile</option>';
+
+            // Aggiungi pulsante per tornare alla home
+            const homeBtn = document.createElement('button');
+            homeBtn.textContent = "Torna alla Home";
+            homeBtn.className = "home-button";
+            homeBtn.onclick = function() {
+                window.location.href = "home.html";
+            };
+            confirmationP.appendChild(homeBtn);
+        } else {
+            // Aggiorna le opzioni e mostra messaggio di successo
+            updateSelectOptions(selectElement, data);
+
+            // Mostra messaggio con il numero di laboratori disponibili
+            if (data.length === 1) {
+                confirmationP.innerHTML = "<span class='success-message'>1 laboratorio disponibile.</span> Seleziona e prenota.";
+            } else {
+                confirmationP.innerHTML = `<span class='success-message'>${data.length} laboratori disponibili.</span> Seleziona un'opzione e prenota.`;
+            }
+
+            // Evidenzia brevemente il select per attirare l'attenzione
+            selectElement.style.boxShadow = "0 0 8px rgba(46, 125, 50, 0.7)";
+            setTimeout(() => {
+                selectElement.style.boxShadow = "";
+            }, 1500);
+        }
+    })
+    .catch(error => {
+        console.error('Errore nel recupero delle attività:', error);
+
+        if (retryCount < maxRetries) {
+            // Riprova automaticamente con backoff esponenziale
+            const backoffTime = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
+            confirmationP.innerHTML = `<span class='error-message'>Errore di connessione.</span> Nuovo tentativo in ${backoffTime/1000} secondi...`;
+
+            setTimeout(() => {
+                fetchLaboratoriDisponibili(turnoId, retryCount + 1);
+            }, backoffTime);
+        } else {
+            // Dopo i tentativi massimi, mostra errore e pulsante per riprovare manualmente
+            confirmationP.innerHTML = "<span class='error-message'>Errore nel recupero delle attività.</span>";
+
+            const retryBtn = document.createElement('button');
+            retryBtn.textContent = "Riprova";
+            retryBtn.className = "retry-button";
+            retryBtn.onclick = function() {
+                if (confirmationP.contains(retryBtn)) {
+                    confirmationP.removeChild(retryBtn);
+                }
+                fetchLaboratoriDisponibili(turnoId);
+            };
+            confirmationP.appendChild(retryBtn);
+        }
+    })
+    .finally(() => {
+        // Riabilita il pulsante di prenotazione
+        if (prenotaButton) {
+            setTimeout(() => {
+                prenotaButton.disabled = false;
+                prenotaButton.classList.remove('btn-disabled');
+            }, 500);
+        }
+
+        // Segna il caricamento come completato
+        isLoadingLabs[turnoId] = false;
+    });
+}
+
+function updateSelectOptions(selectElement, data) {
+    selectElement.innerHTML = '';  // Clear existing options first
+    data.forEach(lab => {
+        const option = document.createElement('option');
+        option.value = lab.nome;  // Use the activity name as the value to be submitted
+        option.text = lab.nome;  // The text to be displayed in the dropdown
+        option.setAttribute('data-classe', lab.classe);  // Store the class for use in the confirmation message
+        selectElement.appendChild(option);
+    });
+}
+
+
+// Variabili per prevenire click multipli
+let isBookingInProgress = false;
+let lastBookingClickTime = 0;
+const BOOKING_CLICK_DELAY = 2000; // 2 secondi di attesa tra i click
+
+function clickRegistrati(turnoId) {
+    const now = Date.now();
+    const selectElement = document.querySelector(`#activitySelect${turnoId}`);
+    const selectedOption = selectElement.options[selectElement.selectedIndex];  // Access the selected <option>
+    const email = sessionStorage.getItem('email');  // Assume email is stored in sessionStorage
+    const prenotaButton = document.getElementById(`btn${turnoId === 1 ? '' : turnoId}`);
+    const confirmationP = document.getElementById(`conferma${turnoId}`);
+
+    // Previeni click multipli
+    if (isBookingInProgress) {
+        confirmationP.textContent = "Prenotazione già in corso, attendi...";
+        return;
+    }
+
+    // Previeni click troppo frequenti
+    if (now - lastBookingClickTime < BOOKING_CLICK_DELAY) {
+        confirmationP.textContent = "Calma! Stai cliccando troppo velocemente 😊 Attendi qualche secondo...";
+
+        // Aggiungi animazione al messaggio per attirare l'attenzione
+        confirmationP.style.animation = "pulse 1s infinite";
+        setTimeout(() => {
+            confirmationP.style.animation = "";
+        }, 3000);
+
+        return;
+    }
+
+    lastBookingClickTime = now;
+
+    // Validazione base
+    if (!selectedOption || selectedOption.value === "") {
+        confirmationP.textContent = 'Per favore, seleziona un laboratorio.';
+        return;
+    }
+
+    if (!email) {
+        confirmationP.textContent = 'Errore: Nessun utente loggato. Effettua il login prima di prenotare.';
+
+        // Aggiungi pulsante per andare alla pagina di login
+        const loginBtn = document.createElement('button');
+        loginBtn.textContent = "Vai al Login";
+        loginBtn.className = "retry-button";
+        loginBtn.onclick = function() {
+            window.location.href = "login-signup.html";
+        };
+        confirmationP.appendChild(loginBtn);
+        return;
+    }
+
+    const activityName = selectedOption.value;  // Get the activity name from the option value
+    const activityClass = selectedOption.getAttribute('data-classe');  // Get the class from the custom data attribute
+
+    // Disabilita il pulsante e mostra stato di caricamento
+    prenotaButton.disabled = true;
+    prenotaButton.classList.add('btn-disabled');
+    isBookingInProgress = true;
+    confirmationP.textContent = "Prenotazione in corso...";
+
+    // Aggiungi animazione di caricamento
+    confirmationP.innerHTML += '<div class="loading-spinner"></div>';
+
+    const postData = {
+        email: email,
+        nome: activityName,  // Use the activity name for the booking
+        idturno: turnoId
+    };
+
+    // Aggiungi un timeout per evitare che la richiesta rimanga bloccata
+    const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 10000)
+    );
+
+    // Esegui la richiesta con timeout
+    Promise.race([
+        fetch('https://gaf-backend.onrender.com/iscrivi', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(postData)
+        }),
+        timeoutPromise
+    ])
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Aggiorna la barra di stato con il conteggio delle richieste attive
+        if (data && data.active_requests !== undefined) {
+            updateStatusBar(data.active_requests);
+        }
+
+        if (data.error) {
+            // Se l'errore è relativo alla capienza, aggiorna la lista
+            if (data.error.includes("Capienza massima") || data.error.includes("sovraccarico")) {
+                // Aggiorna la lista dei laboratori disponibili
+                fetchLaboratoriDisponibili(turnoId);
+                confirmationP.innerHTML = `<span class="error-message">Errore: ${data.error}.</span><br>Abbiamo aggiornato la lista con le opzioni disponibili.`;
+            } else if (data.error.includes("Prenotazione già effettuata")) {
+                confirmationP.innerHTML = `<span class="success-message">Hai già prenotato un laboratorio per questo turno.</span><br>Non puoi prenotare più di un laboratorio per turno.`;
+            } else {
+                confirmationP.innerHTML = `<span class="error-message">Errore: ${data.error}</span>`;
+            }
+        } else {
+            // Successo
+            confirmationP.innerHTML = `<span class="success-message">Prenotazione effettuata con successo!</span><br>
+            Laboratorio: <strong>${activityName}</strong><br>
+            Classe: <strong>${activityClass}</strong><br>
+            <span class="save-note">Fai uno screenshot di questa conferma per memorizzare la prenotazione.</span>`;
+
+            // Aggiungi pulsante per tornare alla home
+            const homeBtn = document.createElement('button');
+            homeBtn.textContent = "Torna alla Home";
+            homeBtn.className = "home-button";
+            homeBtn.onclick = function() {
+                window.location.href = "home.html";
+            };
+            confirmationP.appendChild(homeBtn);
+
+            // Aggiorna la tabella delle prenotazioni
+            setTimeout(() => {
+                fetchUserBookings();
+            }, 1000);
+        }
+    })
+    .catch(error => {
+        console.error("Errore durante la prenotazione:", error);
+
+        // Messaggio di errore più dettagliato
+        if (error.message.includes('Timeout')) {
+            confirmationP.textContent = 'Il server è sovraccarico. Riprova tra qualche secondo.';
+        } else {
+            confirmationP.textContent = 'Errore nella comunicazione con il server. Riprova.';
+        }
+
+        // Aggiungi pulsante per riprovare
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = "Riprova";
+        retryBtn.className = "retry-button";
+        retryBtn.onclick = function() {
+            // Rimuovi il pulsante di retry prima di riprovare
+            if (confirmationP.contains(retryBtn)) {
+                confirmationP.removeChild(retryBtn);
+            }
+            clickRegistrati(turnoId);
+        };
+        confirmationP.appendChild(retryBtn);
+    })
+    .finally(() => {
+        // Riabilita il pulsante dopo un breve ritardo
+        setTimeout(() => {
+            prenotaButton.disabled = false;
+            prenotaButton.classList.remove('btn-disabled');
+            isBookingInProgress = false;
+        }, 1000);
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

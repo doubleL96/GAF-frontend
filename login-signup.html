@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+ <html lang="it">
+ <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="login-signup.css">
+    <link rel="icon" href="immagini/logo_real.ico" type="image/x-icon">
+    <title>Login/Registrazione - GAF 2024</title>
+ </head>
+ <body>
+    <input type="checkbox" id="check">
+    <div id="serverStatusBar" class="server-status-bar">
+        <div class="status-content">
+            <span id="requestCount">0</span> richieste in elaborazione
+            <div class="status-indicator"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="login page">
+            <div class="heading">Logon</div>
+            <form action="#">
+                <div class="switch">
+                    <span>Don't have an account?</span>
+                    <label for="check">Sign up Now</label>
+                </div>
+                <div class="entryarea">
+                    <input type="email" required id="emailL">
+                    <div class="labelline">Inserisci la tua email</div>
+                </div>
+                <div class="entryarea">
+                    <input type="password" required id="passwordL" pattern="[0-9]{4}" title="Il PIN deve essere di 4 cifre">
+                    <div class="labelline">Inserisci il tuo PIN (4 cifre)</div>
+                </div>
+
+                <div id="loginMessage" class="message-box"></div>
+
+                <a href="#">
+                    Per problemi: rappresentantiliceolevi@gmail.com
+                </a>
+
+                <input type="submit" value="Login" id="btn" onclick="clickLogin()">
+
+
+            </form>
+        </div>
+        <div class="signup page">
+            <div class="heading">Sign up</div>
+            <form action="#">
+                <div class="entryarea">
+                    <input type="text" required id="nameS" pattern="[A-Za-zÀ-ÿ\s]{2,30}" title="Il nome deve contenere solo lettere (2-30 caratteri)">
+                    <div class="labelline">Inserisci il tuo nome</div>
+                </div>
+                <div class="entryarea">
+                    <input type="text" required id="surnameS" pattern="[A-Za-zÀ-ÿ\s]{2,30}" title="Il cognome deve contenere solo lettere (2-30 caratteri)">
+                    <div class="labelline">Inserisci il tuo cognome</div>
+                </div>
+                <div class="entryarea">
+                    <input type="email" required id="emailS">
+                    <div class="labelline">Inserisci la tua email</div>
+                </div>
+                <div class="class">
+                    <input class="numberlist" list="number" maxlength="1" required id="number1" pattern="[1-5]" title="Seleziona un numero da 1 a 5">
+                    <datalist id="number">
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                    </datalist>
+                    <input class="letterlist" list="letter" maxlength="1" required id="letter1" pattern="[A-G]" title="Seleziona una lettera da A a G">
+                    <datalist id="letter">
+                        <option value="A"></option>
+                        <option value="B"></option>
+                        <option value="C"></option>
+                        <option value="D"></option>
+                        <option value="E"></option>
+                        <option value="F"></option>
+                        <option value="G"></option>
+                    </datalist>
+                    <input class="sectionlist" list="section" maxlength="2" required id="section1" pattern="(SA|SC|CL|SP)" title="Seleziona una sezione valida (SA, SC, CL, SP)">
+                    <datalist id="section">
+                        <option value="SA"></option>
+                        <option value="SC"></option>
+                        <option value="CL"></option>
+                        <option value="SP"></option>
+                    </datalist>
+                    <div class="labelline">Classe</div>
+                </div>
+                <div class="entryarea">
+                    <input type="password" required id="passwordS" pattern="[0-9]{4}" title="Il PIN deve essere di 4 cifre">
+                    <div class="labelline">Inserisci il tuo PIN (4 cifre)</div>
+                </div>
+
+                <div id="signupMessage" class="message-box"></div>
+                <div class="switch">
+                    <span>Already have an account?</span>
+                    <label for="check">Login Now</label>
+                </div>
+                <input type="submit" value="Signup" id="btn" onclick="clickRegistrati()">
+                <div class="switch">
+                    <span>By clicking the “Signup” button or using the social login options, you are creating an account, and agree to Terms of Service and Privacy Policy</span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="logo-container">
+        <a href="home.html" target="_self">
+        <div id="Square"></div>
+        <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="Frame 1">
+            <g id="Ls-group">
+            <path id="L-left" opacity="0.7" fill-rule="evenodd" clip-rule="evenodd" d="M44.3334 12.6667H26.6667V93.6667H44.3334H72.6667V77H44.3334L44.3334 12.6667Z" fill="white"/>
+            <path id="L-right" opacity="0.7" fill-rule="evenodd" clip-rule="evenodd" d="M75.6666 108H93.3333L93.3333 27H75.6666H47.3333V43.6667H75.6666L75.6666 108Z" fill="white"/>
+            </g>
+            </g>
+        </svg>
+        <div class="h1"><h1>Liceo Levi</h1><h4>montebelluna</h4></div>
+        </a>
+    </div>
+    <script>
+        // Aggiungiamo CSS per i messaggi
+        document.head.insertAdjacentHTML('beforeend', `
+            <style>
+                .message-box {
+                    margin: 10px 0;
+                    padding: 10px;
+                    border-radius: 5px;
+                    font-size: 0.9em;
+                    display: none;
+                }
+                .message-error {
+                    display: block;
+                    background-color: #ffebee;
+                    color: #c62828;
+                    border: 1px solid #ef9a9a;
+                }
+                .message-success {
+                    display: block;
+                    background-color: #e8f5e9;
+                    color: #2e7d32;
+                    border: 1px solid #a5d6a7;
+                }
+                .message-warning {
+                    display: block;
+                    background-color: #fff8e1;
+                    color: #ff8f00;
+                    border: 1px solid #ffe082;
+                }
+                /* Disabilita il pulsante quando è in attesa */
+                .btn-disabled {
+                    opacity: 0.6;
+                    cursor: not-allowed !important;
+                    transform: none !important;
+                }
+                /* Stile per evidenziare i campi con errori */
+                .input-error {
+                    border: 2px solid #c62828 !important;
+                    box-shadow: 0 0 5px rgba(198, 40, 40, 0.5) !important;
+                    animation: shake 0.5s ease-in-out;
+                }
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    20%, 60% { transform: translateX(-5px); }
+                    40%, 80% { transform: translateX(5px); }
+                }
+
+                /* Stili per la barra di stato del server */
+                .server-status-bar {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    background-color: rgba(0, 0, 0, 0.8);
+                    color: white;
+                    padding: 8px 15px;
+                    font-size: 0.9em;
+                    z-index: 1000;
+                    text-align: center;
+                    transition: all 0.3s ease;
+                    transform: translateY(-100%);
+                    opacity: 0;
+                }
+
+                .server-status-bar.active {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+
+                .status-content {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .status-indicator {
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    margin-left: 10px;
+                    background-color: #4CAF50;
+                    animation: pulse 1.5s infinite;
+                }
+
+                @keyframes pulse {
+                    0% { transform: scale(0.8); opacity: 0.7; }
+                    50% { transform: scale(1.2); opacity: 1; }
+                    100% { transform: scale(0.8); opacity: 0.7; }
+                }
+
+                .status-low {
+                    background-color: #4CAF50; /* Verde per carico basso */
+                }
+
+                .status-medium {
+                    background-color: #FFC107; /* Giallo per carico medio */
+                }
+
+                .status-high {
+                    background-color: #F44336; /* Rosso per carico alto */
+                }
+            </style>
+        `);
+
+        // Variabili per prevenire click multipli
+        let isRegistrationInProgress = false;
+        let isLoginInProgress = false;
+        let lastClickTime = 0;
+        const CLICK_DELAY = 2000; // 2 secondi di attesa tra i click
+
+        // Variabili globali per il monitoraggio delle richieste
+        let lastKnownRequestCount = 0;
+        let statusUpdateInterval = null;
+
+        // Funzione per aggiornare la barra di stato
+        function updateStatusBar(requestCount) {
+            const statusBar = document.getElementById('serverStatusBar');
+            const requestCountElement = document.getElementById('requestCount');
+            const statusIndicator = document.querySelector('.status-indicator');
+
+            // Aggiorna il contatore
+            requestCountElement.textContent = requestCount;
+
+            // Determina lo stato del server in base al numero di richieste
+            statusIndicator.classList.remove('status-low', 'status-medium', 'status-high');
+
+            if (requestCount <= 10) {
+                statusIndicator.classList.add('status-low');
+            } else if (requestCount <= 50) {
+                statusIndicator.classList.add('status-medium');
+            } else {
+                statusIndicator.classList.add('status-high');
+            }
+
+            // Mostra o nascondi la barra di stato
+            if (requestCount > 0) {
+                statusBar.classList.add('active');
+            } else {
+                statusBar.classList.remove('active');
+            }
+
+            // Aggiorna la variabile globale
+            lastKnownRequestCount = requestCount;
+        }
+
+        // Funzione per ottenere il conteggio delle richieste attive dal server
+        function fetchActiveRequestCount() {
+            fetch('https://gaf-backend.onrender.com/active_requests')
+                .then(response => response.json())
+                .then(data => {
+                    updateStatusBar(data.total);
+                })
+                .catch(error => {
+                    console.error('Errore nel recupero del conteggio delle richieste:', error);
+                });
+        }
+
+        // Funzione per avviare il monitoraggio delle richieste
+        function startRequestMonitoring() {
+            // Ferma eventuali monitoraggi precedenti
+            if (statusUpdateInterval) {
+                clearInterval(statusUpdateInterval);
+            }
+
+            // Avvia un nuovo monitoraggio
+            fetchActiveRequestCount(); // Prima chiamata immediata
+            statusUpdateInterval = setInterval(fetchActiveRequestCount, 5000); // Poi ogni 5 secondi
+        }
+
+        // Avvia il monitoraggio delle richieste quando la pagina è caricata
+        document.addEventListener('DOMContentLoaded', function() {
+            startRequestMonitoring();
+        });
+
+        // Funzione per validare l'email
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Funzione per validare il PIN (4 cifre)
+        function validatePin(pin) {
+            const re = /^[0-9]{4}$/;
+            return re.test(pin);
+        }
+
+        // Funzione per mostrare messaggi
+        function showMessage(elementId, message, type) {
+            const messageBox = document.getElementById(elementId);
+            messageBox.textContent = message;
+            messageBox.className = 'message-box';
+            messageBox.classList.add('message-' + type);
+        }
+
+        // Funzione per pulire i messaggi
+        function clearMessage(elementId) {
+            const messageBox = document.getElementById(elementId);
+            messageBox.textContent = '';
+            messageBox.className = 'message-box';
+        }
+
+        // Funzione per gestire click multipli
+        function preventMultipleClicks(buttonId) {
+            const now = Date.now();
+            const button = document.getElementById(buttonId);
+
+            if (now - lastClickTime < CLICK_DELAY) {
+                showMessage(buttonId === 'btn' ? 'loginMessage' : 'signupMessage',
+                    "Calma! Stai cliccando troppo velocemente 😊 Attendi qualche secondo...",
+                    "warning");
+                return false;
+            }
+
+            lastClickTime = now;
+            button.classList.add('btn-disabled');
+            button.disabled = true;
+
+            // Riabilita il pulsante dopo un ritardo
+            setTimeout(() => {
+                button.classList.remove('btn-disabled');
+                button.disabled = false;
+            }, CLICK_DELAY);
+
+            return true;
+        }
+
+        function clickRegistrati() {
+            event.preventDefault();  // Prevenire il refresh della pagina
+
+            // Previeni click multipli
+            if (isRegistrationInProgress || !preventMultipleClicks('btn')) {
+                return;
+            }
+
+            clearMessage('signupMessage');
+
+            // Validazione lato client
+            const email = document.getElementById("emailS").value;
+            const nomestud = document.getElementById("nameS").value;
+            const cognomestud = document.getElementById("surnameS").value;
+            const number = document.getElementById("number1").value;
+            const letter = document.getElementById("letter1").value;
+            const section = document.getElementById("section1").value;
+            const pin = document.getElementById("passwordS").value;
+
+            // Validazione campi
+            if (!nomestud || nomestud.length < 2) {
+                showMessage('signupMessage', "Inserisci un nome valido (almeno 2 caratteri)", "error");
+                return;
+            }
+
+            if (!cognomestud || cognomestud.length < 2) {
+                showMessage('signupMessage', "Inserisci un cognome valido (almeno 2 caratteri)", "error");
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                showMessage('signupMessage', "Inserisci un indirizzo email valido", "error");
+                return;
+            }
+
+            if (!number || !letter || !section) {
+                showMessage('signupMessage', "Completa tutti i campi della classe", "error");
+                return;
+            }
+
+            if (!validatePin(pin)) {
+                showMessage('signupMessage', "Il PIN deve essere di 4 cifre", "error");
+                return;
+            }
+
+            const classe = number + letter + section;
+
+            // Tutto ok, procedi con la registrazione
+            isRegistrationInProgress = true;
+            showMessage('signupMessage', "Registrazione in corso...", "warning");
+
+            register(email, nomestud, cognomestud, classe, pin);
+        }
+
+        function register(email, nomestud, cognomestud, classe, pin) {
+            const userData = {
+                email: email,
+                nomestud: nomestud,
+                cognomestud: cognomestud,
+                classe: classe,
+                pin: pin
+            };
+
+            // Timeout per evitare richieste bloccate
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 10000)
+            );
+
+            Promise.race([
+                fetch('https://gaf-backend.onrender.com/register', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(userData)
+                }),
+                timeoutPromise
+            ])
+            .then(response => {
+                // Ottieni il corpo della risposta come JSON indipendentemente dallo stato HTTP
+                return response.json().then(data => {
+                    // Aggiungi lo stato HTTP ai dati per gestirlo più avanti
+                    return { status: response.status, data };
+                });
+            })
+            .then(result => {
+                const { status, data } = result;
+
+                // Aggiorna la barra di stato con il conteggio delle richieste attive
+                if (data && data.active_requests !== undefined) {
+                    updateStatusBar(data.active_requests);
+                }
+
+                if (status === 200) {
+                    // Registrazione riuscita
+                    showMessage('signupMessage', "Registrazione completata con successo! Verrai reindirizzato alla pagina di login.", "success");
+
+                    // Reindirizza dopo un breve ritardo per mostrare il messaggio
+                    setTimeout(() => {
+                        // Passa alla scheda di login
+                        document.getElementById('check').checked = false;
+                        clearMessage('signupMessage');
+                    }, 2000);
+                }
+                else if (status === 409) {
+                    // Email già registrata
+                    showMessage('signupMessage', "Questa email è già registrata. Prova ad accedere.", "error");
+
+                    // Evidenzia il campo email
+                    document.getElementById("emailS").classList.add("input-error");
+                    setTimeout(() => document.getElementById("emailS").classList.remove("input-error"), 3000);
+                }
+                else if (status === 400) {
+                    // Errore di validazione
+                    const errorMsg = data.error || "Dati non validi";
+                    showMessage('signupMessage', errorMsg, "error");
+
+                    // Evidenzia il campo problematico in base al messaggio di errore
+                    if (errorMsg.includes("Email")) {
+                        document.getElementById("emailS").classList.add("input-error");
+                        setTimeout(() => document.getElementById("emailS").classList.remove("input-error"), 3000);
+                    }
+                    if (errorMsg.includes("Nome")) {
+                        document.getElementById("nameS").classList.add("input-error");
+                        setTimeout(() => document.getElementById("nameS").classList.remove("input-error"), 3000);
+                    }
+                    if (errorMsg.includes("Cognome")) {
+                        document.getElementById("surnameS").classList.add("input-error");
+                        setTimeout(() => document.getElementById("surnameS").classList.remove("input-error"), 3000);
+                    }
+                    if (errorMsg.includes("Classe")) {
+                        document.getElementById("number1").classList.add("input-error");
+                        document.getElementById("letter1").classList.add("input-error");
+                        document.getElementById("section1").classList.add("input-error");
+                        setTimeout(() => {
+                            document.getElementById("number1").classList.remove("input-error");
+                            document.getElementById("letter1").classList.remove("input-error");
+                            document.getElementById("section1").classList.remove("input-error");
+                        }, 3000);
+                    }
+                    if (errorMsg.includes("PIN")) {
+                        document.getElementById("passwordS").classList.add("input-error");
+                        setTimeout(() => document.getElementById("passwordS").classList.remove("input-error"), 3000);
+                    }
+                }
+                else {
+                    // Altri errori
+                    showMessage('signupMessage', data.error || "Errore durante la registrazione", "error");
+                }
+            })
+            .catch(error => {
+                console.error("Registration failed:", error);
+
+                if (error.message.includes('Timeout')) {
+                    showMessage('signupMessage', "Il server è sovraccarico. Riprova tra qualche secondo.", "error");
+                } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    showMessage('signupMessage', "Impossibile connettersi al server. Verifica la tua connessione internet.", "error");
+                } else {
+                    showMessage('signupMessage', "Errore durante la registrazione. Riprova più tardi.", "error");
+                }
+            })
+            .finally(() => {
+                isRegistrationInProgress = false;
+            });
+        }
+
+        function clickLogin() {
+            event.preventDefault();
+
+            // Previeni click multipli
+            if (isLoginInProgress || !preventMultipleClicks('btn')) {
+                return;
+            }
+
+            clearMessage('loginMessage');
+
+            const email = document.getElementById("emailL").value;
+            const pin = document.getElementById("passwordL").value;
+
+            // Validazione
+            if (!validateEmail(email)) {
+                showMessage('loginMessage', "Inserisci un indirizzo email valido", "error");
+                return;
+            }
+
+            if (!validatePin(pin)) {
+                showMessage('loginMessage', "Il PIN deve essere di 4 cifre", "error");
+                return;
+            }
+
+            // Tutto ok, procedi con il login
+            isLoginInProgress = true;
+            showMessage('loginMessage', "Login in corso...", "warning");
+
+            login(email, pin);
+        }
+
+        function login(email, pin) {
+            // Prepara i dati da inviare
+            const userData = {
+                email, pin
+            };
+
+            // Timeout per evitare richieste bloccate
+            const timeoutPromise = new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 10000)
+            );
+
+            // Invia la richiesta al server
+            Promise.race([
+                fetch('https://gaf-backend.onrender.com/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(userData)
+                }),
+                timeoutPromise
+            ])
+            .then(response => {
+                // Ottieni il corpo della risposta come JSON indipendentemente dallo stato HTTP
+                return response.json().then(data => {
+                    // Aggiungi lo stato HTTP ai dati per gestirlo più avanti
+                    return { status: response.status, data };
+                });
+            })
+            .then(result => {
+                const { status, data } = result;
+
+                // Aggiorna la barra di stato con il conteggio delle richieste attive
+                if (data && data.active_requests !== undefined) {
+                    updateStatusBar(data.active_requests);
+                }
+
+                // Gestisci i diversi stati HTTP
+                if (status === 200) {
+                    // Login riuscito
+                    showMessage('loginMessage', "Login effettuato con successo! Verrai reindirizzato...", "success");
+
+                    // Salva l'email in sessionStorage e reindirizza
+                    sessionStorage.email = email;
+
+                    // Reindirizza dopo un breve ritardo per mostrare il messaggio
+                    setTimeout(() => {
+                        window.location.href = "home.html";
+                    }, 1500);
+                }
+                else if (status === 401) {
+                    // Errore di autenticazione - mostra il messaggio specifico dal server
+                    showMessage('loginMessage', data.error || "Credenziali non valide", "error");
+
+                    // Evidenzia il campo problematico in base al messaggio di errore
+                    const errorMsg = data.error || "";
+                    if (errorMsg.includes("Email")) {
+                        document.getElementById("emailL").classList.add("input-error");
+                        setTimeout(() => document.getElementById("emailL").classList.remove("input-error"), 3000);
+                    }
+                    if (errorMsg.includes("PIN")) {
+                        document.getElementById("passwordL").classList.add("input-error");
+                        setTimeout(() => document.getElementById("passwordL").classList.remove("input-error"), 3000);
+                    }
+                }
+                else if (status === 400) {
+                    // Errore nei dati inviati
+                    showMessage('loginMessage', data.error || "Dati di login non validi", "error");
+                }
+                else {
+                    // Altri errori
+                    showMessage('loginMessage', data.error || "Errore durante il login", "error");
+                }
+            })
+            .catch(error => {
+                console.error("Errore:", error);
+
+                if (error.message.includes('Timeout')) {
+                    showMessage('loginMessage', "Il server è sovraccarico. Riprova tra qualche secondo.", "error");
+                } else if (error.message.includes('Failed to fetch') || error.message.includes('NetworkError')) {
+                    showMessage('loginMessage', "Impossibile connettersi al server. Verifica la tua connessione internet.", "error");
+                } else {
+                    showMessage('loginMessage', "Errore di connessione. Riprova più tardi.", "error");
+                }
+            })
+            .finally(() => {
+                isLoginInProgress = false;
+            });
+        }
+    </script>
+ </body>
+ </html>
