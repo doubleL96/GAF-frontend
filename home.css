@@ -36,12 +36,13 @@
   margin-left:5px;
   appearance: none;
   backface-visibility: hidden;
-  background-color: #27ae60;
+  background-color: transparent;
+  border-color: #18181a;
+  border-width: 1px;
   border-radius: 8px;
-  border-style: none;
   box-shadow: rgba(39, 174, 96, .15) 0 4px 9px;
   box-sizing: border-box;
-  color: #fff;
+  color: #18181a;
   cursor: pointer;
   display: inline-block;
   font-family: Inter,-apple-system,system-ui,"Segoe UI",Helvetica,Arial,sans-serif;
@@ -65,7 +66,8 @@
 }
 
 #button_login:hover {
-  background-color: #1e8449;
+  background-color: white;
+  color:#262626;
   opacity: 1;
   transform: translateY(0);
   transition-duration: .35s;
@@ -81,8 +83,8 @@
 
 
 #button_logout {
-  background-color: #f44336; 
-  color: white; /* Colore del testo */
+  background-color: transparent; 
+  color: #262626; /* Colore del testo */
   padding: 5px 25px; /* Spaziatura interna */
   border: none; /* Nessun bordo */
   border-radius: 5px; /* Bordi arrotondati */
@@ -93,7 +95,8 @@
 }
 
 #button_logout:hover {
-  background-color: #d32f2f; /* Cambia colore al passaggio del mouse */
+  background-color: white; /* Cambia colore al passaggio del mouse */
+  color: #262626;
 }
 
 body {
@@ -104,10 +107,11 @@ body {
   padding: 0; /* Remove default padding */
   font-family: 'Poppins', sans-serif;
   box-sizing: border-box;
-  background-color: #5ca0f2;
-background-image: linear-gradient(315deg, #5ca0f2 0%, #f5f7f6 74%);
+  background-color: #f3f3f3;
+
 
 }
+
 
 /*CSS del simbolo*/
 #grandezza_logo{
@@ -127,7 +131,7 @@ background-image: linear-gradient(315deg, #5ca0f2 0%, #f5f7f6 74%);
   width:37px;
   height:37px;
   padding: 0;
-  background-color: #124b7e;
+  background-color: #262626;
   opacity: 1;
   top: -62.3%;
   left: 39.6%;
@@ -155,7 +159,7 @@ background-image: linear-gradient(315deg, #5ca0f2 0%, #f5f7f6 74%);
 .h1{
   position: absolute;
   width: 200px;
-  top:-10px;
+  top:20px;
   height: 130px;
   left: 140px;
   overflow: hidden;
@@ -165,7 +169,7 @@ background-image: linear-gradient(315deg, #5ca0f2 0%, #f5f7f6 74%);
 }
 h1{
   position: absolute;
-  color:#124b7e;
+  color:#262626;
   opacity: 1;
   left: -185px;
   top: 27px;
@@ -175,7 +179,7 @@ h1{
 }
 h4{
   position: absolute;
-  color:#124b7e;
+  color:#262626;
   opacity: 1;
   left: -185px;
   top: 64px;
@@ -225,15 +229,18 @@ h4{
     flex-direction: column; /* Arrange items vertically */
     justify-content: flex-start; /* Align items at the top */
     align-items: center; /* Center items horizontally */
-    height: 50px; /* Match image height */
+    height: 40px; /* Match image height */
     margin-top: 40px;
   }
 
-#titolo_home img {
+.titolo_centrale {
   max-width: 100%; /* Allow image to shrink but not expand */
   height: auto; /* Maintain aspect ratio */
+  font-size: 100px;
+  font-weight: 500;
+  color: #262626;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif ;
 }
-
 /* CSS del rettangolo */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
@@ -265,7 +272,7 @@ h4{
   height: 50%;
 }
 #container_dibattito{
-  background-image: url('immagini/conferenza\ logo.png');
+  background-image: url('immagini/sfondo3.png');
   background-size: cover; /* per adattare l'immagine alla dimensione del contenitore */
     background-position: center;
     top:0%;
@@ -274,7 +281,7 @@ h4{
   z-index: 0;
 }
 #container_conferenza{
-  background-image: url('immagini/dibattito\ logo.png');
+  background-image: url('immagini/sfondo2.jpg');
   left: 0%;
   top:-1%;
   background-size: cover; /* per adattare l'immagine alla dimensione del contenitore */
@@ -296,7 +303,7 @@ h4{
   font-size: 35px;
   top: 40%;
   color: white;
-  -webkit-text-stroke: 2.5px black; /* Spessore e colore del bordo */
+  /*-webkit-text-stroke: 2.5px black;  Spessore e colore del bordo */
 }
 /*IN REALTA' E' IL RETTANGOLO IN CUI C'E' SCRITTO CONFERENZA!!!*/
 #titolo_dibattito{
@@ -334,12 +341,11 @@ h4{
   display: inline-block;
   position: relative;
   overflow: hidden;
-  border: 2px solid #18181a; /* Modifica dello spessore del bordo */
   border-radius: 8px; /* Aggiunta di arrotondamento ai bordi */
   text-align: center; /* Centrare il testo all'interno del bottone */
   cursor: pointer;
-  background: #fcf6f0;
-  color: #18181a;
+  background: transparent;
+  color: #262626;
   font-size: 15px;
   padding: 18px 18px 17px;
   text-decoration: none;
@@ -377,7 +383,7 @@ h4{
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: black;
+  background-color: #262626;
   transform-origin: bottom center;
   transition: transform 600ms cubic-bezier(0.48, 0, 0.12, 1);
   transform: skewY(9.3deg) scaleY(0);
@@ -401,12 +407,12 @@ h4{
     display: inline-block;
     position: relative;
     overflow: hidden;
-    border: 2px solid #18181a; /* Modifica dello spessore del bordo */
+    
     border-radius: 8px; /* Aggiunta di arrotondamento ai bordi */
     text-align: center; /* Centrare il testo all'interno del bottone */
     cursor: pointer;
     background: #f2fbfe;
-    color: #18181a;
+    color: #262626;
     font-size: 15px;
     padding: 18px 18px 17px;
     text-decoration: none;
@@ -570,6 +576,14 @@ margin-bottom: -145px;
  border-radius: 800px;
  overflow: hidden;
  margin-left: 30%;
+}
+
+.profile-photo-leo{
+  margin-top: 5px;
+  margin-left: 5px;
+  width:50px;
+  height:50px;
+  transform: scale(0.8);
 }
 
 .worker_info{
@@ -750,14 +764,16 @@ font-size: 16px;
 #button_login {
   margin-left:13px;
   margin-top:-6px;
-  background-color: #27ae60;
+  background-color: #f3f3f3;
+  color: #27ae60;
   font-size: 12px;
   padding: 0.5px 8px; 
 
 }
 
 #button_login:hover {
-  background-color: #1e8449;
+  background-color: #27ae60;
+  color: #f3f3f3;
   opacity: 1;
   transform: translateY(0);
   transition-duration: .35s;
@@ -773,8 +789,8 @@ font-size: 16px;
 
 
 #button_logout {
-  background-color: #f44336; 
-  color: white; /* Colore del testo */
+  background-color: #f3f3f3; 
+  color: #d32f2f; /* Colore del testo */
   padding: 0.5px 8px; /* Spaziatura interna */
   border: none; /* Nessun bordo */
   border-radius: 5px; /* Bordi arrotondati */
@@ -786,6 +802,7 @@ font-size: 16px;
 
 #button_logout:hover {
   background-color: #d32f2f; /* Cambia colore al passaggio del mouse */
+  color: #f3f3f3;
 }
 
 #titolo_home {
@@ -797,11 +814,15 @@ font-size: 16px;
   margin-top: 20px; /* Spazio superiore */
 }
 
-#titolo_home img {
-max-width: 69%; /* Allow image to shrink but not expand */
-height: auto; /* Maintain aspect ratio */
+#titolo_home {
+max-width: 100%; /* Allow image to shrink but not expand */
+height: 300px; /* Maintain aspect ratio */
 justify-content: flex-start; /* Align items at the top */
 align-items: center; /* Center items horizontally */
+margin-top: 0px;
+}
+.titolo_centrale{
+  font-size: 50px;
 }
 
 /*media query per film dibattito conferenza */
@@ -853,7 +874,7 @@ align-items: center; /* Center items horizontally */
   transform: translate(-50%, -50%); /* Ajustamento perfetto al centro */
   color: white; /* Colore del testo */
   font-size: 22px; /* Dimensione del font */
-  -webkit-text-stroke: 2px black;
+  /*-webkit-text-stroke: 2px black;
   z-index: 10; /* Al di sopra di tutti gli altri elementi */
 }
 
@@ -888,7 +909,7 @@ align-items: center; /* Center items horizontally */
   border-radius: 20px; /* Bordi arrotondati */
   overflow: hidden; /* Nasconde gli elementi che sporgono */
   position: relative; /* Necessario per z-index */
-  background-image: url('immagini/sfondo_dibattito_tel.png');
+  background-image: url('immagini/sfondo2.jpg');
   background-size: cover; /* Copre interamente il background */
   object-fit: cover;
   background-position: center; /* Centra l'immagine di sfondo */
@@ -906,7 +927,7 @@ align-items: center; /* Center items horizontally */
   overflow: hidden; /* Nasconde gli elementi che sporgono */
   position: relative; /* Necessario per z-index */
   object-fit: cover;
-  background-image: url('immagini/sfondo_conferenze_tel.png');
+  background-image: url('immagini/sfondo3.png');
   background-size: cover; /* Copre interamente il background */
   background-position: center; /* Centra l'immagine di sfondo */
   background-color: rgb(9, 142, 137); /* Colore di fallback */
@@ -923,7 +944,7 @@ align-items: center; /* Center items horizontally */
   overflow: hidden; /* Nasconde gli elementi che sporgono */
   position: relative; /* Necessario per z-index */
   object-fit: cover;
-  background-image: url('immagini/sfondo_film_tel.png');
+  background-image: url('immagini/sfondo1.jpg');
   background-size: cover; /* Copre interamente il background */
   background-position: center; /* Centra l'immagine di sfondo */
   background-color: rgb(229, 140, 110); /* Colore di fallback */
@@ -986,6 +1007,7 @@ align-items: center; /* Center items horizontally */
 .profile-photo-leo{
   width:110px;
   height:70px;
+  transform: scale(0.8);
 }
 .profile-photo-manu{
   width:130px;
