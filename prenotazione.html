@@ -6,6 +6,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="prenotazione.css">
     <link rel="icon" href="immagini/logo_real.ico" type="image/x-icon">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <title>Prenotazione Laboratori - GAF 2024</title>
     <style>
         /* Stili per i messaggi e le animazioni */
@@ -216,6 +222,60 @@
             background: linear-gradient(to right, #7f8c8d 0%, #95a5a6 100%) !important;
             cursor: not-allowed;
         }
+
+        /* Stili per Select2 */
+        .select2-container {
+            width: 100% !important;
+        }
+
+        .select2-container--default .select2-selection--single {
+            height: 38px;
+            border: 1.5px solid #000000ab;
+            border-radius: 7px;
+            font-size: 1.2em;
+            padding: 5px 8px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.12), inset 0 1px 2px rgba(0,0,0,0.24);
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            line-height: 28px;
+            color: #000000ab;
+            padding-left: 0;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 38px;
+        }
+
+        .select2-dropdown {
+            border: 1.5px solid #000000ab;
+            border-radius: 0 0 7px 7px;
+        }
+
+        .select2-results__option {
+            padding: 8px;
+            font-size: 1.1em;
+        }
+
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background: linear-gradient(111.4deg, rgb(55, 168, 192) -0.2%, rgb(103, 187, 125) 100.2%);
+        }
+
+        /* Mobile styles for Select2 */
+        @media (max-width: 700px) {
+            .select2-results__option {
+                padding: 10px; /* Larger touch target on mobile */
+                font-size: 1em;
+            }
+
+            .select2-container--default .select2-selection--single {
+                height: 42px; /* Taller for easier touch */
+            }
+
+            .select2-container--default .select2-selection--single .select2-selection__arrow {
+                height: 42px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -361,203 +421,45 @@
     </div>
     <script>
 
-//1
-
+// Initialize Select2 for all select elements
 document.addEventListener('DOMContentLoaded', function () {
-    const selectElement = document.getElementById('activitySelect1');
-
-    // Function to expand the select
-    function expandSelect(select) {
-        select.size = 6;
-        select.style.overflowY = 'auto';
-        // Force redraw on Android Chrome
-        select.style.display = 'none';
-        setTimeout(() => {
-            select.style.display = '';
-        }, 10);
-    }
-
-    // Function to collapse the select
-    function collapseSelect(select) {
-        select.size = 1;
-        select.style.overflowY = 'hidden';
-    }
-
-    // Handle click/touch events
-    selectElement.addEventListener('click', function (e) {
-        if (selectElement.size > 1) {
-            collapseSelect(selectElement);
-        } else {
-            expandSelect(selectElement);
+    // Initialize Select2 with common options
+    $('.scrollableSelect').select2({
+        width: '100%',
+        placeholder: 'Seleziona un\'opzione',
+        allowClear: false,
+        minimumResultsForSearch: -1, // Disable search
+        language: {
+            noResults: function() {
+                return "Nessuna opzione disponibile";
+            }
         }
     });
 
-    // Add touchstart event for mobile devices
-    selectElement.addEventListener('touchstart', function (e) {
-        if (selectElement.size <= 1) {
-            e.preventDefault(); // Prevent default only when expanding
-            expandSelect(selectElement);
-        }
-    }, { passive: false });
-
-    selectElement.addEventListener('blur', function () {
-        collapseSelect(selectElement);
-    });
-
-    selectElement.addEventListener('change', function () {
-        window.setTimeout(function() {
-            collapseSelect(selectElement);
-        }, 100);
-    });
-});
-
-//2
-
-document.addEventListener('DOMContentLoaded', function () {
-    const selectElement = document.getElementById('activitySelect2');
-
-    // Function to expand the select
-    function expandSelect(select) {
-        select.size = 6;
-        select.style.overflowY = 'auto';
-        // Force redraw on Android Chrome
-        select.style.display = 'none';
-        setTimeout(() => {
-            select.style.display = '';
-        }, 10);
-    }
-
-    // Function to collapse the select
-    function collapseSelect(select) {
-        select.size = 1;
-        select.style.overflowY = 'hidden';
-    }
-
-    // Handle click/touch events
-    selectElement.addEventListener('click', function (e) {
-        if (selectElement.size > 1) {
-            collapseSelect(selectElement);
-        } else {
-            expandSelect(selectElement);
+    // Handle change events for each select
+    $('#activitySelect1').on('change', function() {
+        // Show the booking button when an option is selected
+        if ($(this).val()) {
+            $('#btn').show();
         }
     });
 
-    // Add touchstart event for mobile devices
-    selectElement.addEventListener('touchstart', function (e) {
-        if (selectElement.size <= 1) {
-            e.preventDefault(); // Prevent default only when expanding
-            expandSelect(selectElement);
-        }
-    }, { passive: false });
-
-    selectElement.addEventListener('blur', function () {
-        collapseSelect(selectElement);
-    });
-
-    selectElement.addEventListener('change', function () {
-        window.setTimeout(function() {
-            collapseSelect(selectElement);
-        }, 100);
-    });
-});
-
-//3
-
-document.addEventListener('DOMContentLoaded', function () {
-    const selectElement = document.getElementById('activitySelect3');
-
-    // Function to expand the select
-    function expandSelect(select) {
-        select.size = 6;
-        select.style.overflowY = 'auto';
-        // Force redraw on Android Chrome
-        select.style.display = 'none';
-        setTimeout(() => {
-            select.style.display = '';
-        }, 10);
-    }
-
-    // Function to collapse the select
-    function collapseSelect(select) {
-        select.size = 1;
-        select.style.overflowY = 'hidden';
-    }
-
-    // Handle click/touch events
-    selectElement.addEventListener('click', function (e) {
-        if (selectElement.size > 1) {
-            collapseSelect(selectElement);
-        } else {
-            expandSelect(selectElement);
+    $('#activitySelect2').on('change', function() {
+        if ($(this).val()) {
+            $('#btn2').show();
         }
     });
 
-    // Add touchstart event for mobile devices
-    selectElement.addEventListener('touchstart', function (e) {
-        if (selectElement.size <= 1) {
-            e.preventDefault(); // Prevent default only when expanding
-            expandSelect(selectElement);
-        }
-    }, { passive: false });
-
-    selectElement.addEventListener('blur', function () {
-        collapseSelect(selectElement);
-    });
-
-    selectElement.addEventListener('change', function () {
-        window.setTimeout(function() {
-            collapseSelect(selectElement);
-        }, 100);
-    });
-});
-
-//4
-
-document.addEventListener('DOMContentLoaded', function () {
-    const selectElement = document.getElementById('activitySelect4');
-
-    // Function to expand the select
-    function expandSelect(select) {
-        select.size = 6;
-        select.style.overflowY = 'auto';
-        // Force redraw on Android Chrome
-        select.style.display = 'none';
-        setTimeout(() => {
-            select.style.display = '';
-        }, 10);
-    }
-
-    // Function to collapse the select
-    function collapseSelect(select) {
-        select.size = 1;
-        select.style.overflowY = 'hidden';
-    }
-
-    // Handle click/touch events
-    selectElement.addEventListener('click', function (e) {
-        if (selectElement.size > 1) {
-            collapseSelect(selectElement);
-        } else {
-            expandSelect(selectElement);
+    $('#activitySelect3').on('change', function() {
+        if ($(this).val()) {
+            $('#btn3').show();
         }
     });
 
-    // Add touchstart event for mobile devices
-    selectElement.addEventListener('touchstart', function (e) {
-        if (selectElement.size <= 1) {
-            e.preventDefault(); // Prevent default only when expanding
-            expandSelect(selectElement);
+    $('#activitySelect4').on('change', function() {
+        if ($(this).val()) {
+            $('#btn4').show();
         }
-    }, { passive: false });
-
-    selectElement.addEventListener('blur', function () {
-        collapseSelect(selectElement);
-    });
-
-    selectElement.addEventListener('change', function () {
-        window.setTimeout(function() {
-            collapseSelect(selectElement);
-        }, 100);
     });
 });
 
@@ -896,7 +798,19 @@ function fetchLaboratoriDisponibili(turnoId, retryCount = 0) {
         if (data.length === 0) {
             // Nessun laboratorio disponibile
             confirmationP.innerHTML = "<span class='error-message'>Non ci sono laboratori disponibili per questo turno.</span>";
-            selectElement.innerHTML = '<option value="">Nessun laboratorio disponibile</option>';
+
+            // Clear and update select with a disabled option
+            $(selectElement).empty();
+            $(selectElement).append(new Option('Nessun laboratorio disponibile', ''));
+
+            // Reinitialize Select2
+            $(selectElement).select2('destroy');
+            $(selectElement).select2({
+                width: '100%',
+                placeholder: 'Nessun laboratorio disponibile',
+                disabled: true,
+                minimumResultsForSearch: -1
+            });
 
             // Aggiungi pulsante per tornare alla home
             const homeBtn = document.createElement('button');
@@ -910,6 +824,15 @@ function fetchLaboratoriDisponibili(turnoId, retryCount = 0) {
             // Aggiorna le opzioni e mostra messaggio di successo
             updateSelectOptions(selectElement, data);
 
+            // Reinitialize Select2 to ensure it works with the new options
+            $(selectElement).select2('destroy');
+            $(selectElement).select2({
+                width: '100%',
+                placeholder: 'Seleziona un\'opzione',
+                allowClear: false,
+                minimumResultsForSearch: -1
+            });
+
             // Mostra messaggio con il numero di laboratori disponibili
             if (data.length === 1) {
                 confirmationP.innerHTML = "<span class='success-message'>1 laboratorio disponibile.</span> Seleziona e prenota.";
@@ -918,9 +841,9 @@ function fetchLaboratoriDisponibili(turnoId, retryCount = 0) {
             }
 
             // Evidenzia brevemente il select per attirare l'attenzione
-            selectElement.style.boxShadow = "0 0 8px rgba(46, 125, 50, 0.7)";
+            $('.select2-container--default .select2-selection--single').css('box-shadow', '0 0 8px rgba(46, 125, 50, 0.7)');
             setTimeout(() => {
-                selectElement.style.boxShadow = "";
+                $('.select2-container--default .select2-selection--single').css('box-shadow', '');
             }, 1500);
         }
     })
@@ -966,14 +889,22 @@ function fetchLaboratoriDisponibili(turnoId, retryCount = 0) {
 }
 
 function updateSelectOptions(selectElement, data) {
-    selectElement.innerHTML = '';  // Clear existing options first
+    // Clear existing options first
+    $(selectElement).empty();
+
+    // Add placeholder option
+    const placeholderOption = new Option('Seleziona un\'opzione', '');
+    $(selectElement).append(placeholderOption);
+
+    // Add options from data
     data.forEach(lab => {
-        const option = document.createElement('option');
-        option.value = lab.nome;  // Use the activity name as the value to be submitted
-        option.text = lab.nome;  // The text to be displayed in the dropdown
-        option.setAttribute('data-classe', lab.classe);  // Store the class for use in the confirmation message
-        selectElement.appendChild(option);
+        const option = new Option(lab.nome, lab.nome);
+        $(option).attr('data-classe', lab.classe);  // Store the class for use in the confirmation message
+        $(selectElement).append(option);
     });
+
+    // Update Select2
+    $(selectElement).trigger('change');
 }
 
 
@@ -985,7 +916,8 @@ const BOOKING_CLICK_DELAY = 2000; // 2 secondi di attesa tra i click
 function clickRegistrati(turnoId) {
     const now = Date.now();
     const selectElement = document.querySelector(`#activitySelect${turnoId}`);
-    const selectedOption = selectElement.options[selectElement.selectedIndex];  // Access the selected <option>
+    const selectedValue = $(`#activitySelect${turnoId}`).val();
+    const selectedOption = $(`#activitySelect${turnoId} option:selected`)[0];
     const email = sessionStorage.getItem('email');  // Assume email is stored in sessionStorage
     const prenotaButton = document.getElementById(`btn${turnoId === 1 ? '' : turnoId}`);
     const confirmationP = document.getElementById(`conferma${turnoId}`);
@@ -1012,7 +944,7 @@ function clickRegistrati(turnoId) {
     lastBookingClickTime = now;
 
     // Validazione base
-    if (!selectedOption || selectedOption.value === "") {
+    if (!selectedValue) {
         confirmationP.textContent = 'Per favore, seleziona un laboratorio.';
         return;
     }
@@ -1031,8 +963,8 @@ function clickRegistrati(turnoId) {
         return;
     }
 
-    const activityName = selectedOption.value;  // Get the activity name from the option value
-    const activityClass = selectedOption.getAttribute('data-classe');  // Get the class from the custom data attribute
+    const activityName = selectedValue;  // Get the activity name from the selected value
+    const activityClass = $(selectedOption).attr('data-classe');  // Get the class from the custom data attribute
 
     // Disabilita il pulsante e mostra stato di caricamento
     prenotaButton.disabled = true;
