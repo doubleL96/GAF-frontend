@@ -409,7 +409,7 @@
 
             // Timeout per evitare richieste bloccate
             const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 10000)
+                setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 40000)
             );
 
             Promise.race([
@@ -547,7 +547,7 @@
 
             // Timeout per evitare richieste bloccate
             const timeoutPromise = new Promise((_, reject) =>
-                setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 10000)
+                setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 40000)
             );
 
             // Invia la richiesta al server
