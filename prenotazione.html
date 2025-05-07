@@ -647,7 +647,7 @@ function fetchUserBookings() {
 
     // Timeout per evitare richieste bloccate
     const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 180000)
+        setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 480000)
     );
 
     // Esegui la richiesta con timeout
@@ -775,7 +775,7 @@ function fetchLaboratoriDisponibili(turnoId, retryCount = 0) {
 
     // Timeout per evitare richieste bloccate
     const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 180000)
+        setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 480000)
     );
 
     // Esegui la richiesta con timeout
@@ -983,7 +983,7 @@ function clickRegistrati(turnoId) {
 
     // Aggiungi un timeout per evitare che la richiesta rimanga bloccata
     const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 180000)
+        setTimeout(() => reject(new Error('Timeout - Il server è sovraccarico')), 480000)
     );
 
     // Esegui la richiesta con timeout
