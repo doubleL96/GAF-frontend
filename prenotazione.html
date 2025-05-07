@@ -147,11 +147,18 @@
             text-align: center;
         }
 
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
         .booking-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
             font-size: 0.9em;
+            table-layout: fixed; /* This helps control column widths */
         }
 
         .booking-table th, .booking-table td {
@@ -262,7 +269,7 @@
                 <button class="mostraEntryAreaButton" data-turno-id="2" id="mostraEntryAreaButton2">TURNO 2</button>
                 <div class="entryarea" style="display: none;">
                     <div class="labelline">11.00-13.00</div>
-                    <select required id="activitySelect2">
+                    <select required id="activitySelect2" class="scrollableSelect">
                         <option value="">Seleziona un'opzione</option>
                             <option value="opzione2">Opzione A</option>
                             <option value="opzione3">Opzione B</option>
@@ -288,7 +295,7 @@
                 <button class="mostraEntryAreaButton" data-turno-id="3" id="mostraEntryAreaButton3">TURNO 3</button>
                 <div class="entryarea"style="display: none;">
                     <div class="labelline">08.00-10.00</div>
-                    <select required id="activitySelect3">
+                    <select required id="activitySelect3" class="scrollableSelect">
                         <option value="">Seleziona un'opzione</option>
                         <option value="opzione2">Opzione 2</option>
                             <option value="opzione3">Opzione 3</option>
@@ -312,7 +319,8 @@
                 <button class="mostraEntryAreaButton" data-turno-id="4" id="mostraEntryAreaButton4">TURNO 4</button>
                 <div class="entryarea"style="display: none;">
                     <div class="labelline">11.00-13.00</div>
-                    <select required id="activitySelect4">
+                    <select required id="activitySelect4" class="scrollableSelect">
+                        <option value="">Seleziona un'opzione</option>
                         <option value="opzione2">Opzione 2</option>
                             <option value="opzione3">Opzione 3</option>
                             <option value="opzione4">Opzione 4</option>
@@ -358,31 +366,48 @@
 document.addEventListener('DOMContentLoaded', function () {
     const selectElement = document.getElementById('activitySelect1');
 
+    // Function to expand the select
+    function expandSelect(select) {
+        select.size = 6;
+        select.style.overflowY = 'auto';
+        // Force redraw on Android Chrome
+        select.style.display = 'none';
+        setTimeout(() => {
+            select.style.display = '';
+        }, 10);
+    }
 
+    // Function to collapse the select
+    function collapseSelect(select) {
+        select.size = 1;
+        select.style.overflowY = 'hidden';
+    }
 
+    // Handle click/touch events
     selectElement.addEventListener('click', function (e) {
-        // Toggle the size attribute based on its current state
         if (selectElement.size > 1) {
-            selectElement.size = 1;
-            selectElement.style.overflowY = 'hidden';
+            collapseSelect(selectElement);
         } else {
-            selectElement.size = 6;  // Or whatever number of items you want to show
-            selectElement.style.overflowY = 'auto';
+            expandSelect(selectElement);
         }
     });
 
+    // Add touchstart event for mobile devices
+    selectElement.addEventListener('touchstart', function (e) {
+        if (selectElement.size <= 1) {
+            e.preventDefault(); // Prevent default only when expanding
+            expandSelect(selectElement);
+        }
+    }, { passive: false });
+
     selectElement.addEventListener('blur', function () {
-        // Ensure to collapse the dropdown when the select loses focus
-        selectElement.size = 1;
-        selectElement.style.overflowY = 'hidden';
+        collapseSelect(selectElement);
     });
 
     selectElement.addEventListener('change', function () {
-        // Collapse the dropdown also when a selection has been made
         window.setTimeout(function() {
-            selectElement.size = 1;
-            selectElement.style.overflowY = 'hidden';
-        }, 100); // Add slight delay to allow for selection
+            collapseSelect(selectElement);
+        }, 100);
     });
 });
 
@@ -391,31 +416,48 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const selectElement = document.getElementById('activitySelect2');
 
+    // Function to expand the select
+    function expandSelect(select) {
+        select.size = 6;
+        select.style.overflowY = 'auto';
+        // Force redraw on Android Chrome
+        select.style.display = 'none';
+        setTimeout(() => {
+            select.style.display = '';
+        }, 10);
+    }
 
+    // Function to collapse the select
+    function collapseSelect(select) {
+        select.size = 1;
+        select.style.overflowY = 'hidden';
+    }
 
+    // Handle click/touch events
     selectElement.addEventListener('click', function (e) {
-        // Toggle the size attribute based on its current state
         if (selectElement.size > 1) {
-            selectElement.size = 1;
-            selectElement.style.overflowY = 'hidden';
+            collapseSelect(selectElement);
         } else {
-            selectElement.size = 6;  // Or whatever number of items you want to show
-            selectElement.style.overflowY = 'auto';
+            expandSelect(selectElement);
         }
     });
 
+    // Add touchstart event for mobile devices
+    selectElement.addEventListener('touchstart', function (e) {
+        if (selectElement.size <= 1) {
+            e.preventDefault(); // Prevent default only when expanding
+            expandSelect(selectElement);
+        }
+    }, { passive: false });
+
     selectElement.addEventListener('blur', function () {
-        // Ensure to collapse the dropdown when the select loses focus
-        selectElement.size = 1;
-        selectElement.style.overflowY = 'hidden';
+        collapseSelect(selectElement);
     });
 
     selectElement.addEventListener('change', function () {
-        // Collapse the dropdown also when a selection has been made
         window.setTimeout(function() {
-            selectElement.size = 1;
-            selectElement.style.overflowY = 'hidden';
-        }, 100); // Add slight delay to allow for selection
+            collapseSelect(selectElement);
+        }, 100);
     });
 });
 
@@ -424,31 +466,48 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const selectElement = document.getElementById('activitySelect3');
 
+    // Function to expand the select
+    function expandSelect(select) {
+        select.size = 6;
+        select.style.overflowY = 'auto';
+        // Force redraw on Android Chrome
+        select.style.display = 'none';
+        setTimeout(() => {
+            select.style.display = '';
+        }, 10);
+    }
 
+    // Function to collapse the select
+    function collapseSelect(select) {
+        select.size = 1;
+        select.style.overflowY = 'hidden';
+    }
 
+    // Handle click/touch events
     selectElement.addEventListener('click', function (e) {
-        // Toggle the size attribute based on its current state
         if (selectElement.size > 1) {
-            selectElement.size = 1;
-            selectElement.style.overflowY = 'hidden';
+            collapseSelect(selectElement);
         } else {
-            selectElement.size = 6;  // Or whatever number of items you want to show
-            selectElement.style.overflowY = 'auto';
+            expandSelect(selectElement);
         }
     });
 
+    // Add touchstart event for mobile devices
+    selectElement.addEventListener('touchstart', function (e) {
+        if (selectElement.size <= 1) {
+            e.preventDefault(); // Prevent default only when expanding
+            expandSelect(selectElement);
+        }
+    }, { passive: false });
+
     selectElement.addEventListener('blur', function () {
-        // Ensure to collapse the dropdown when the select loses focus
-        selectElement.size = 1;
-        selectElement.style.overflowY = 'hidden';
+        collapseSelect(selectElement);
     });
 
     selectElement.addEventListener('change', function () {
-        // Collapse the dropdown also when a selection has been made
         window.setTimeout(function() {
-            selectElement.size = 1;
-            selectElement.style.overflowY = 'hidden';
-        }, 100); // Add slight delay to allow for selection
+            collapseSelect(selectElement);
+        }, 100);
     });
 });
 
@@ -457,31 +516,48 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener('DOMContentLoaded', function () {
     const selectElement = document.getElementById('activitySelect4');
 
+    // Function to expand the select
+    function expandSelect(select) {
+        select.size = 6;
+        select.style.overflowY = 'auto';
+        // Force redraw on Android Chrome
+        select.style.display = 'none';
+        setTimeout(() => {
+            select.style.display = '';
+        }, 10);
+    }
 
+    // Function to collapse the select
+    function collapseSelect(select) {
+        select.size = 1;
+        select.style.overflowY = 'hidden';
+    }
 
+    // Handle click/touch events
     selectElement.addEventListener('click', function (e) {
-        // Toggle the size attribute based on its current state
         if (selectElement.size > 1) {
-            selectElement.size = 1;
-            selectElement.style.overflowY = 'hidden';
+            collapseSelect(selectElement);
         } else {
-            selectElement.size = 6;  // Or whatever number of items you want to show
-            selectElement.style.overflowY = 'auto';
+            expandSelect(selectElement);
         }
     });
 
+    // Add touchstart event for mobile devices
+    selectElement.addEventListener('touchstart', function (e) {
+        if (selectElement.size <= 1) {
+            e.preventDefault(); // Prevent default only when expanding
+            expandSelect(selectElement);
+        }
+    }, { passive: false });
+
     selectElement.addEventListener('blur', function () {
-        // Ensure to collapse the dropdown when the select loses focus
-        selectElement.size = 1;
-        selectElement.style.overflowY = 'hidden';
+        collapseSelect(selectElement);
     });
 
     selectElement.addEventListener('change', function () {
-        // Collapse the dropdown also when a selection has been made
         window.setTimeout(function() {
-            selectElement.size = 1;
-            selectElement.style.overflowY = 'hidden';
-        }, 100); // Add slight delay to allow for selection
+            collapseSelect(selectElement);
+        }, 100);
     });
 });
 
@@ -699,17 +775,18 @@ function fetchUserBookings() {
 
         // Crea la tabella delle prenotazioni
         let tableHTML = `
-            <table class="booking-table">
-                <thead>
-                    <tr>
-                        <th>Turno</th>
-                        <th>Giorno</th>
-                        <th>Orario</th>
-                        <th>Laboratorio</th>
-                        <th>Aula</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <div class="table-responsive">
+                <table class="booking-table">
+                    <thead>
+                        <tr>
+                            <th>Turno</th>
+                            <th>Giorno</th>
+                            <th>Orario</th>
+                            <th>Laboratorio</th>
+                            <th>Aula</th>
+                        </tr>
+                    </thead>
+                    <tbody>
         `;
 
         // Mappa dei turni
@@ -740,6 +817,7 @@ function fetchUserBookings() {
         tableHTML += `
                 </tbody>
             </table>
+            </div>
         `;
 
         tableContainer.innerHTML = tableHTML;

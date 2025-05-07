@@ -95,6 +95,8 @@ input[type="checkbox"] {
     -moz-appearance: none;
     appearance: none;
     transition: max-height 0.2s ease-in-out;
+    /* Fix for Android Chrome */
+    -webkit-tap-highlight-color: transparent;
 }
 
 
@@ -116,6 +118,9 @@ input[type="checkbox"] {
     appearance: none;        /* Standard CSS3 pseudo-element */
     padding: 5px 8px;
     box-shadow: inset 0 1px 3px rgba(0,0,0,0.12), inset 0 1px 2px rgba(0,0,0,0.24);
+    /* Fix for Android Chrome */
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
 }
 
 
@@ -405,12 +410,27 @@ h4{
 
 
 @media (max-width: 700px) {
+    /* Responsive styles for the booking table */
+    .booking-table {
+        font-size: 0.8em; /* Smaller font size on mobile */
+        width: 95%; /* Slightly reduced width to prevent overflow */
+        margin: 0 auto; /* Center the table */
+        overflow-x: auto; /* Allow horizontal scrolling if needed */
+    }
+
+    .booking-table th, .booking-table td {
+        padding: 4px; /* Reduced padding */
+    }
+
+    .turno-badge {
+        font-size: 0.7em; /* Smaller badges */
+        padding: 2px 5px;
+    }
 
     .container {
         height: auto;
         margin-top: 20px;
         padding-bottom: 20px;
-
     }
 
     .container .page {
